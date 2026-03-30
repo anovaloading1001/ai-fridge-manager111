@@ -195,115 +195,91 @@
 
 <script>
 // ==============================
-// 超级菜谱库 200+ 道
+// 超级菜谱库
 // ==============================
 const recipeData = {
   "牛肉": [
     "土豆炖牛肉","番茄炖牛肉","青椒炒牛肉","洋葱爆牛肉","黑椒牛肉粒",
-    "芹菜炒牛肉","孜然牛肉","水煮牛肉","红烧牛肉","萝卜炖牛肉",
-    "金针菇肥牛","酸汤肥牛","小炒黄牛肉","香菜炒牛肉"
+    "芹菜炒牛肉","孜然牛肉","水煮牛肉","红烧牛肉","萝卜炖牛肉"
   ],
   "牛腩": [
-    "土豆炖牛腩","番茄炖牛腩","红烧牛腩","萝卜炖牛腩","咖喱牛腩",
-    "牛腩粉丝汤","香辣牛腩","土豆烧牛腩","番茄土豆炖牛腩"
+    "土豆炖牛腩","番茄炖牛腩","红烧牛腩","萝卜炖牛腩","咖喱牛腩"
   ],
   "猪肉": [
     "红烧肉","青椒炒肉","土豆炒肉","蒜苔炒肉","芹菜炒肉",
-    "回锅肉","农家小炒肉","萝卜炖肉","榨菜炒肉","洋葱炒肉",
-    "香菇炒肉","木耳炒肉","豆角炒肉","菜花炒肉"
+    "回锅肉","小炒肉","萝卜炖肉","榨菜炒肉","洋葱炒肉"
   ],
   "鸡肉": [
     "白切鸡","宫保鸡丁","青椒炒鸡","香菇滑鸡","咖喱鸡",
-    "辣子鸡","葱油鸡","黄焖鸡","炒鸡片","山药鸡汤",
-    "香菇鸡汤","玉米鸡汤","爆炒鸡丁","泡椒鸡丁"
+    "辣子鸡","葱油鸡","黄焖鸡","炒鸡片","山药鸡汤"
   ],
   "鸡腿": [
-    "可乐鸡腿","奥尔良烤鸡腿","卤鸡腿","黄焖鸡腿","照烧鸡腿",
-    "蜜汁烤鸡腿","蒜香鸡腿","香辣鸡腿","土豆焖鸡腿"
+    "可乐鸡腿","奥尔良烤鸡腿","卤鸡腿","黄焖鸡腿","照烧鸡腿"
   ],
   "羊肉": [
-    "萝卜炖羊肉","葱爆羊肉","清炖羊肉","孜然羊肉","红烧羊肉",
-    "羊肉汤","羊肉火锅","香菜炒羊肉","洋葱炒羊肉"
+    "萝卜炖羊肉","葱爆羊肉","清炖羊肉","孜然羊肉","红烧羊肉"
   ],
   "虾": [
-    "白灼虾","油焖大虾","蒜蓉虾","椒盐虾","清蒸虾",
-    "蒜蓉粉丝蒸虾","虾仁滑蛋","香辣虾","咖喱虾","柠檬虾"
+    "白灼虾","油焖大虾","蒜蓉虾","椒盐虾","清蒸虾","虾仁滑蛋"
   ],
   "鸡蛋": [
-    "西红柿炒蛋","葱花炒蛋","荷包蛋","蒸蛋羹","蛋花汤",
-    "韭菜炒蛋","青椒炒蛋","木耳炒蛋","洋葱炒蛋","黄瓜炒蛋"
+    "西红柿炒蛋","葱花炒蛋","荷包蛋","蒸蛋羹","蛋花汤","韭菜炒蛋"
   ],
   "西红柿": [
-    "西红柿炒蛋","西红柿蛋汤","番茄炖牛腩","番茄炖豆腐","番茄金针菇汤",
-    "糖拌西红柿","番茄炒蛋","番茄土豆汤","番茄烧茄子"
+    "西红柿炒蛋","西红柿蛋汤","番茄炖牛腩","番茄炖豆腐"
   ],
   "土豆": [
-    "酸辣土豆丝","土豆炖牛肉","土豆炒肉","土豆泥","红烧土豆",
-    "孜然土豆","土豆炖鸡","土豆炖排骨","清炒土豆丝","土豆烧豆角"
+    "酸辣土豆丝","土豆炖牛肉","土豆炒肉","土豆泥","红烧土豆"
   ],
   "娃娃菜": [
-    "蒜蓉娃娃菜","上汤娃娃菜","清炒娃娃菜","娃娃菜炖粉丝","蚝油娃娃菜",
-    "麻辣娃娃菜","娃娃菜炖豆腐","蒜蓉粉丝娃娃菜"
+    "蒜蓉娃娃菜","上汤娃娃菜","清炒娃娃菜","蚝油娃娃菜"
   ],
   "青椒": [
-    "青椒炒肉","青椒炒蛋","青椒土豆丝","虎皮青椒","青椒炒香干",
-    "青椒炒鸡丁","青椒炒牛肉","青椒炒木耳"
+    "青椒炒肉","青椒炒蛋","青椒土豆丝","虎皮青椒"
   ],
   "胡萝卜": [
-    "胡萝卜炒肉","土豆炖牛肉","胡萝卜炒蛋","胡萝卜炒木耳","清炒胡萝卜丝",
-    "胡萝卜炖鸡","胡萝卜玉米汤","胡萝卜炒鸡丁"
+    "胡萝卜炒肉","土豆炖牛肉","胡萝卜炒蛋"
   ],
   "菠菜": [
-    "清炒菠菜","菠菜蛋汤","蒜蓉菠菜","姜汁菠菜","菠菜炒鸡蛋",
-    "麻酱菠菜","菠菜拌粉丝","菠菜炒木耳"
+    "清炒菠菜","菠菜蛋汤","蒜蓉菠菜"
   ],
   "茄子": [
-    "红烧茄子","鱼香茄子","蒜蓉茄子","茄子炒肉","茄子烧豆角",
-    "地三鲜","茄子烧土豆","酱香茄子"
+    "红烧茄子","鱼香茄子","蒜蓉茄子"
   ],
   "豆腐": [
-    "麻婆豆腐","番茄炖豆腐","家常豆腐","红烧豆腐","小葱拌豆腐",
-    "金针菇豆腐汤","青菜豆腐汤","肉末豆腐","豆腐炒鸡蛋"
+    "麻婆豆腐","番茄炖豆腐","家常豆腐"
   ],
   "牛奶": [
-    "热牛奶","牛奶燕麦粥","牛奶布丁","牛奶鸡蛋羹","牛奶玉米汁",
-    "牛奶水果捞","牛奶炖蛋","奶香馒头"
+    "热牛奶","牛奶燕麦","牛奶布丁"
   ],
   "黄瓜": [
-    "凉拌黄瓜","黄瓜炒蛋","黄瓜炒肉","拍黄瓜","黄瓜拌木耳",
-    "黄瓜炒火腿","黄瓜蛋汤","清炒黄瓜片"
+    "凉拌黄瓜","黄瓜炒蛋","拍黄瓜"
   ],
   "玉米": [
-    "玉米汤","玉米炒豌豆","玉米炒鸡丁","玉米排骨汤","玉米牛奶汁",
-    "清炒玉米","玉米胡萝卜汤","玉米炒鸡蛋"
+    "玉米汤","玉米炒豌豆","玉米排骨汤"
   ],
   "香菇": [
-    "香菇滑鸡","香菇炒肉","香菇青菜","香菇炒蛋","香菇炖鸡",
-    "香菇豆腐汤","香菇炒青椒","香菇炒木耳"
+    "香菇滑鸡","香菇炒肉","香菇青菜"
   ]
 };
 
 const stepData = {
   "土豆炖牛肉": {
     need: ["牛肉","土豆","胡萝卜"],
-    steps: ["1. 牛肉焯水去血沫","2. 炒香葱姜，放入牛肉翻炒","3. 加开水炖40分钟","4. 加土豆、胡萝卜再炖20分钟","5. 加盐出锅"]
+    steps: ["1. 牛肉焯水","2. 炒香炖40分钟","3. 加土豆炖20分钟","4. 加盐出锅"]
   },
   "西红柿炒蛋": {
     need: ["西红柿","鸡蛋"],
-    steps: ["1. 西红柿切块","2. 鸡蛋加盐打散","3. 先炒鸡蛋至定型","4. 炒西红柿出汁","5. 混合调味"]
-  },
-  "可乐鸡腿": {
-    need: ["鸡腿","可乐"],
-    steps: ["1. 鸡腿焯水","2. 煎至两面金黄","3. 倒入可乐没过鸡腿","4. 大火收汁"]
+    steps: ["1. 鸡蛋打散","2. 炒鸡蛋","3. 炒西红柿","4. 混合"]
   }
 };
 
 const aliasMap = {
   "牛腩":"牛肉","牛蹄筋":"牛肉","牛排":"牛肉",
   "五花肉":"猪肉","瘦肉":"猪肉","排骨":"猪肉",
-  "鸡胸肉":"鸡肉","鸡翅":"鸡肉","鸡爪":"鸡肉",
-  "基围虾":"虾","青虾":"虾","虾仁":"虾",
-  "白菜":"娃娃菜","油麦菜":"菠菜"
+  "鸡胸肉":"鸡肉","鸡翅":"鸡肉",
+  "基围虾":"虾","虾仁":"虾",
+  "白菜":"娃娃菜"
 };
 
 // ==============================
@@ -328,9 +304,9 @@ function goAdd() {
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("editPage").classList.add("active");
 }
-function goEdit(i) {
-  editId = i;
-  const f = foods[i];
+function goEdit(realId) {
+  editId = realId;
+  const f = foods[realId];
   document.getElementById("foodName").value = f.name;
   document.getElementById("foodDay").value = f.day;
   document.getElementById("foodCate").value = f.cate;
@@ -351,15 +327,15 @@ function saveFood() {
   localStorage.setItem("foods", JSON.stringify(foods));
   goMain();
 }
-function delFood(i) {
+function delFood(realId) {
   if (!confirm("确认删除？")) return;
-  foods.splice(i, 1);
+  foods.splice(realId, 1);
   localStorage.setItem("foods", JSON.stringify(foods));
   renderList();
 }
 
 // ==============================
-// 图标 + 过期状态
+// 工具
 // ==============================
 function getIcon(cate) {
   const map = {Vegetable:"🥬",Fruit:"🍎",Meat:"🥩",Seafood:"🦐",Dairy:"🥛",Other:"🥦"};
@@ -380,19 +356,21 @@ function getRecipeList(name) {
   const key = aliasMap[name] || name;
   return recipeData[key] || [];
 }
-function toggleRecipe(i) {
-  openRecipeId = openRecipeId === i ? -1 : i;
+function toggleRecipe(realId) {
+  openRecipeId = openRecipeId === realId ? -1 : realId;
   renderList();
 }
-function showRecipeDetail(i, rName) {
-  const info = stepData[rName] || { need: [], steps: ["暂无详细步骤，可自由发挥～"] };
-  const food = foods[i];
-  const needText = info.need.map(n => n === food.name || foods.some(f=>f.name===n) ? `✅${n}` : `⚪${n}`).join(" ");
+function showRecipeDetail(realId, rName) {
+  const info = stepData[rName] || { need: [], steps: ["暂无详细步骤"] };
+  const food = foods[realId];
+  const needText = info.need.map(n => 
+    n === food.name || foods.some(f=>f.name===n) ? `✅${n}` : `⚪${n}`
+  ).join(" ");
   alert(`【${rName}】\n食材：\n${needText}\n\n步骤：\n${info.steps.join("\n")}`);
 }
 
 // ==============================
-// 渲染列表（按过期排序）
+// 渲染（修复删除BUG）
 // ==============================
 function renderList() {
   const container = document.getElementById("foodList");
@@ -401,19 +379,21 @@ function renderList() {
     return;
   }
 
-  const sorted = [...foods].sort((a,b)=>{
-    const la = getExpInfo(a).left;
-    const lb = getExpInfo(b).left;
+  const sorted = [...foods].map((f, id)=>({f,id})).sort((a,b)=>{
+    const la = getExpInfo(a.f).left;
+    const lb = getExpInfo(b.f).left;
     return la - lb;
   });
 
-  container.innerHTML = sorted.map((f, idx)=>{
+  container.innerHTML = sorted.map((item)=>{
+    const realId = item.id;
+    const f = item.f;
     const exp = getExpInfo(f);
     const icon = getIcon(f.cate);
     const passed = Math.floor((Date.now() - f.time)/86400000);
     const recipes = getRecipeList(f.name);
-    const showRec = openRecipeId === idx;
-    const shuffled = recipes.sort(() => Math.random() - 0.5);
+    const showRec = openRecipeId === realId;
+    const shuffled = recipes.sort(()=>Math.random()-0.5);
     const showList = shuffled.slice(0,3);
 
     return `
@@ -428,9 +408,9 @@ function renderList() {
       </div>
 
       <div class="action-row">
-        <button class="small-btn" onclick="goEdit(${idx})">编辑</button>
-        <button class="small-btn" onclick="delFood(${idx})">删除</button>
-        <button class="small-btn" onclick="toggleRecipe(${idx})">
+        <button class="small-btn" onclick="goEdit(${realId})">编辑</button>
+        <button class="small-btn" onclick="delFood(${realId})">删除</button>
+        <button class="small-btn" onclick="toggleRecipe(${realId})">
           ${showRec?"收起菜谱":"查看菜谱"}
         </button>
       </div>
@@ -439,12 +419,12 @@ function renderList() {
       <div class="recipe-sheet">
         <div>
           <span class="recipe-title">推荐菜谱（${f.name}）</span>
-          <span class="refresh-btn" onclick="toggleRecipe(${idx});setTimeout(()=>toggleRecipe(${idx}),50)">换一批</span>
+          <span class="refresh-btn" onclick="toggleRecipe(${realId});setTimeout(()=>toggleRecipe(${realId}),50)">换一批</span>
         </div>
         ${showList.map(r=>`
-          <div class="recipe-item" onclick="showRecipeDetail(${idx},'${r}')">${r}</div>
+          <div class="recipe-item" onclick="showRecipeDetail(${realId},'${r}')">${r}</div>
         `).join('')}
-        ${showList.length===0 ? '<div style="font-size:12px;color:#888">暂无推荐菜谱</div>' : ''}
+        ${showList.length===0 ? '<div style="font-size:12px;color:#888">暂无推荐</div>' : ''}
       </div>
       ` : ''}
     </div>
