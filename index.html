@@ -11,13 +11,11 @@
   .page{display:none}
   .page.active{display:block}
 
-  /* 顶部标题栏 */
   .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
   .header-title{display:flex;align-items:center;gap:8px}
   .header-title .icon{font-size:22px}
   .header-title .text{font-size:20px;font-weight:700;color:#1F2937}
 
-  /* 新加按钮（彻底重做） */
   .add-btn{
     width:48px;height:48px;
     border-radius:16px;border:none;
@@ -28,7 +26,6 @@
     cursor:pointer;
   }
 
-  /* 食材卡片 */
   .food-card{
     background:#fff;border-radius:20px;
     padding:18px;margin-bottom:12px;
@@ -43,22 +40,28 @@
   }
   .food-name{font-size:17px;font-weight:600;color:#1F2937;margin-bottom:4px}
   .food-info{font-size:13px;color:#8A919E;line-height:1.4;margin-bottom:6px}
-  .food-left{font-size:16px;font-weight:700;color:#EF4444;margin-bottom:8px}
+  .food-left{
+    font-size:14px;
+    color:#6B7280;
+    margin-bottom:8px;
+    padding:2px 6px;
+    border-radius:4px;
+    background:#F3F4F6;
+    display:inline-block;
+  }
 
-  /* 过期进度条 */
   .progress-bar{width:100%;height:6px;background:#F1F5F9;border-radius:3px;overflow:hidden}
-  .progress{height:100%;border-radius:3px;background:#4ADE80}
-  .progress.warning{background:#F59E0B}
-  .progress.danger{background:#EF4444}
+  .progress{height:100%;border-radius:3px;}
+  .progress-safe{background:#92B992}
+  .progress-warning{background:#F5C99A}
+  .progress-danger{background:#E5989B}
 
-  /* 按钮组 */
   .action-row{display:flex;gap:8px;margin-top:14px}
   .small-btn{
     flex:1;padding:10px;border-radius:12px;border:none;
     background:#F1F5F9;color:#374151;font-size:14px;cursor:pointer;
   }
 
-  /* 编辑页 */
   .input-group{margin-bottom:18px}
   .input-label{font-size:14px;font-weight:500;color:#374151;margin-bottom:8px}
   .input-field{
@@ -84,7 +87,6 @@
     font-size:15px;margin-top:8px;cursor:pointer;
   }
 
-  /* 推荐菜区域 */
   .recipe-panel{margin-top:16px;padding-top:16px;border-top:1px solid #F1F5F9}
   .recipe-title{font-size:15px;font-weight:600;color:#1F2937;margin-bottom:12px}
   .refresh-btn{
@@ -96,9 +98,9 @@
     background:#F9FAFB;border-radius:14px;padding:14px;margin-bottom:8px;
   }
   .recipe-name{font-size:15px;font-weight:600;color:#1F2937;margin-bottom:6px}
-  .material-list{font-size:13px;line-height:1.5;color:#4B5563}
-  .have{color:#16A34A}
-  .lack{color:#DC2626}
+  .material-list{font-size:13px;line-height:1.5;color:#6B7280}
+  .mat-have{color:#4B5563}
+  .mat-lack{color:#9CA3AF}
 </style>
 </head>
 <body>
@@ -158,7 +160,6 @@
 </div>
 
 <script>
-// 食材与菜谱库（你给的全部食材，每样7~8道）
 const recipeLib = {
   "猪肉":["猪肉炖白菜","青椒炒肉丝","猪肉炒蒜苔","猪肉炖土豆","猪肉炒芹菜","猪肉炒莲藕","猪肉炖胡萝卜"],
   "排骨":["排骨炖玉米","排骨炖萝卜","排骨炖土豆","排骨炖莲藕","排骨海带汤","排骨山药汤","蒜香排骨"],
@@ -214,14 +215,20 @@ const recipeLib = {
   "鳕鱼":["香煎鳕鱼","清蒸鳕鱼","鳕鱼炖萝卜","鳕鱼炖土豆","鳕鱼炒西兰花","鳕鱼炒胡萝卜","鳕鱼炖白菜"]
 };
 
-// 从菜名里提取食材关键词
-const materialKeys = [
-  "猪肉","排骨","牛肉","牛腩","羊肉","羊排","鸡肉","鸡翅","鸡腿","鸭肉","鸭脖","鹅肉","鸽子肉","兔肉","培根","火腿",
-  "白菜","菠菜","生菜","油菜","芹菜","韭菜","番茄","黄瓜","冬瓜","南瓜","茄子","青椒","土豆","胡萝卜","白萝卜",
-  "莲藕","西兰花","花椰菜","洋葱","大蒜",
-  "带鱼","黄花鱼","鲈鱼","鲫鱼","草鱼","对虾","皮皮虾","梭子蟹","扇贝","蛤蜊","生蚝","鱿鱼","海带","紫菜","三文鱼","鳕鱼"
-];
+const emojiMap = {
+  "猪肉":"🥩","排骨":"🥩","牛肉":"🥩","牛腩":"🥩","羊肉":"🥩","羊排":"🥩",
+  "鸡肉":"🐔","鸡翅":"🍗","鸡腿":"🍗","鸭肉":"🦆","鸭脖":"🦆","鹅肉":"🦢",
+  "鸽子肉":"🕊️","兔肉":"🐇","培根":"🥓","火腿":"🥓",
+  "白菜":"🥬","菠菜":"🥬","生菜":"🥬","油菜":"🥬","芹菜":"🥬","韭菜":"🌱",
+  "番茄":"🍅","黄瓜":"🥒","冬瓜":"🥒","南瓜":"🎃","茄子":"🍆","青椒":"🫑",
+  "土豆":"🥔","胡萝卜":"🥕","白萝卜":"🥕","莲藕":"🥢","西兰花":"🥦","花椰菜":"🥦",
+  "洋葱":"🧅","大蒜":"🧄",
+  "带鱼":"🐟","黄花鱼":"🐟","鲈鱼":"🐟","鲫鱼":"🐟","草鱼":"🐟",
+  "对虾":"🦐","皮皮虾":"🦐","梭子蟹":"🦀","扇贝":"🦪","蛤蜊":"🦪","生蚝":"🦪",
+  "鱿鱼":"🦑","海带":"🌿","紫菜":"🌿","三文鱼":"🐟","鳕鱼":"🐟"
+};
 
+const materialKeys = Object.keys(emojiMap);
 function getMaterials(recipeName) {
   return materialKeys.filter(k => recipeName.includes(k));
 }
@@ -308,15 +315,14 @@ function getStatus(f) {
   const total = +f.expireDay;
   const left = Math.max(0, total - passed);
   const ratio = left / total;
-  let cls = "progress";
-  if (left <= 1) cls += " danger";
-  else if (left <= 3) cls += " warning";
-  return { left, ratio, cls, pd, exp: new Date(pd.getTime() + total * 86400000) };
+  let cls = "progress-safe";
+  if (left <= 1) cls = "progress-danger";
+  else if (left <= 3) cls = "progress-warning";
+  return { left, ratio, cls };
 }
 
-function iconOf(c) {
-  const m = { Meat:"🥩", Vegetable:"🥬", Seafood:"🦐", Other:"📦" };
-  return m[c] || "📦";
+function getIcon(name) {
+  return emojiMap[name] || "📦";
 }
 
 function shuffle(arr, seed) {
@@ -345,18 +351,20 @@ function renderList() {
     const seed = recipeShuffleSeed[id] || 0;
     const list = shuffle(allRec, seed).slice(0, 3);
     const myFoodNames = foods.map(x => x.name);
+    const pd = new Date(f.produceDate);
+    const exp = new Date(pd.getTime() + f.expireDay * 86400000);
     return `
     <div class="food-card">
       <div class="food-row">
-        <div class="food-icon">${iconOf(f.cate)}</div>
+        <div class="food-icon">${getIcon(f.name)}</div>
         <div style="flex:1">
           <div class="food-name">${f.name}</div>
           <div class="food-info">
-            生产 ${s.pd.toLocaleDateString()} ｜ 过期 ${s.exp.toLocaleDateString()} ｜ 保质 ${f.expireDay}天
+            生产 ${pd.toLocaleDateString()} ｜ 过期 ${exp.toLocaleDateString()} ｜ 保质 ${f.expireDay}天
           </div>
           <div class="food-left">剩余 ${s.left} 天</div>
           <div class="progress-bar">
-            <div class="${s.cls}" style="width:${s.ratio*100}%"></div>
+            <div class="progress ${s.cls}" style="width:${s.ratio*100}%"></div>
           </div>
         </div>
       </div>
@@ -380,7 +388,9 @@ function renderList() {
             <div class="recipe-name">${r}</div>
             <div class="material-list">
               ${mats.map(m =>
-                myFoodNames.includes(m) ? `<span class="have">✅ ${m}</span>` : `<span class="lack">❌ ${m}</span>`
+                myFoodNames.includes(m)
+                  ? `<span class="mat-have">● ${m}</span>`
+                  : `<span class="mat-lack">○ ${m}</span>`
               ).join("　")}
             </div>
           </div>`;
