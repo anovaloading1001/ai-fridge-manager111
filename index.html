@@ -11,7 +11,6 @@
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
-  /* 核心背景：米白色 + 点状网格纹理 */
   body {
     background: #F9F6F0;
     background-image: radial-gradient(#EAE4D8 1px, transparent 1px);
@@ -36,13 +35,6 @@
     align-items: center;
     gap: 8px;
   }
-  .icon {
-    width: 24px;
-    height: 24px;
-    display: grid;
-    place-items: center;
-    font-size: 18px;
-  }
   .badge {
     padding: 6px 12px;
     border-radius: 999px;
@@ -50,7 +42,6 @@
     font-weight: 500;
     color: #fff;
   }
-  /* 列表卡片 */
   .item-card {
     background: #fff;
     border-radius: 20px;
@@ -61,7 +52,6 @@
     gap: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
   }
-  /* 极简图标样式 */
   .item-icon {
     width: 44px;
     height: 44px;
@@ -75,11 +65,9 @@
   .item-info { flex: 1; }
   .item-name { font-weight: 500; font-size: 16px; }
   .item-type { font-size: 13px; color: #888; margin-top: 2px; }
-  /* 状态标签颜色 */
-  .expired { background: #E57373; } /* 红色 */
-  .warning { background: #F5B767; }   /* 橙色 */
-  .normal { background: #70A984; }    /* 绿色 */
-  /* 底部导航 */
+  .expired { background: #E57373; }
+  .warning { background: #F5B767; }
+  .normal { background: #70A984; }
   .nav {
     position: fixed;
     bottom: 20px;
@@ -103,7 +91,6 @@
     color: #70A984;
     font-weight: 600;
   }
-  /* 添加页样式 */
   .input-group { margin-bottom: 16px; }
   .input-group label {
     display: block;
@@ -136,6 +123,15 @@
     border: 1px solid #EAE4D8;
     color: #666;
   }
+  .edit-btn {
+    font-size: 12px;
+    color: #888;
+    background: #f1f1f1;
+    border: none;
+    border-radius: 8px;
+    padding: 4px 8px;
+    cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -144,18 +140,14 @@
 <div class="page active" id="list">
   <div class="header">
     <div class="title">
-      <span class="icon">🌱</span>
+      <span>🌱</span>
       <span>My Fridge</span>
     </div>
-    <div class="badge normal">Me</div>
   </div>
-
-  <div id="itemList">
-    <!-- 食材卡片会通过JS渲染 -->
-  </div>
+  <div id="itemList"></div>
 </div>
 
-<!-- 添加页 -->
+<!-- 添加/编辑页 -->
 <div class="page" id="add">
   <div class="header">
     <div class="title" onclick="go('list')">← 返回</div>
@@ -163,7 +155,7 @@
 
   <div class="input-group">
     <label>食材名称</label>
-    <input type="text" id="name" placeholder="例如：Tomatoes">
+    <input type="text" id="name" placeholder="例如：牛奶">
   </div>
 
   <div class="input-group">
@@ -174,11 +166,11 @@
   <div class="input-group">
     <label>食材分类</label>
     <select id="cate">
-      <option value="Vegetable">蔬菜 (Vegetable)</option>
-      <option value="Dairy">蛋奶 (Dairy)</option>
-      <option value="Meat">肉类 (Meat)</option>
-      <option value="Fruit">水果 (Fruit)</option>
-      <option value="Other">其他 (Other)</option>
+      <option value="Vegetable">蔬菜 🥬</option>
+      <option value="Dairy">蛋奶 🥛</option>
+      <option value="Meat">肉类 🥩</option>
+      <option value="Fruit">水果 🍎</option>
+      <option value="Other">其他 🥦</option>
     </select>
   </div>
 
@@ -186,22 +178,36 @@
   <button class="btn btn-outline" onclick="go('list')">取消</button>
 </div>
 
-<!-- 底部导航 -->
 <div class="nav">
   <div class="nav-item active" onclick="go('list')">📋 食材列表</div>
-  <div class="nav-item" onclick="go('add')">➕ 添加食材</div>
+  <div class="nav-item" onclick="startAdd()">➕ 添加</div>
 </div>
 
 <script>
 let foods = JSON.parse(localStorage.getItem('fridgeFoods')) || [];
+let editIndex = -1;
 
-// 页面切换
 function go(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(pageId).classList.add('active');
 }
 
-// 保存食材
+function startAdd() {
+  editIndex = -1;
+  document.getElementById('name').value = '';
+  document.getElementById('day').value = '';
+  go('add');
+}
+
+function startEdit(idx) {
+  const f = foods[idx];
+  editIndex = idx;
+  document.getElementById('name').value = f.name;
+  document.getElementById('day').value = f.day;
+  document.getElementById('cate').value = f.cate;
+  go('add');
+}
+
 function saveFood() {
   const name = document.getElementById('name').value.trim();
   const day = parseInt(document.getElementById('day').value);
@@ -212,64 +218,69 @@ function saveFood() {
     return;
   }
 
-  foods.push({ name, day, cate, time: Date.now() });
+  const data = { name, day, cate, time: Date.now() };
+
+  if (editIndex >= 0) {
+    foods[editIndex] = data;
+  } else {
+    foods.push(data);
+  }
+
   localStorage.setItem('fridgeFoods', JSON.stringify(foods));
   renderList();
   go('list');
 }
 
-// 渲染列表
+function del(idx) {
+  if (!confirm("确定删除？")) return;
+  foods.splice(idx, 1);
+  localStorage.setItem('fridgeFoods', JSON.stringify(foods));
+  renderList();
+}
+
 function renderList() {
-  const listEl = document.getElementById('itemList');
+  const el = document.getElementById('itemList');
   if (foods.length === 0) {
-    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#999">暂无食材</div>';
+    el.innerHTML = '<div style="text-align:center;padding:40px;color:#999">暂无食材</div>';
     return;
   }
 
-  // 按过期时间排序
   const sorted = [...foods].sort((a, b) => {
-    const leftA = Math.max(0, a.day - Math.floor((Date.now() - a.time) / 86400000));
-    const leftB = Math.max(0, b.day - Math.floor((Date.now() - b.time) / 86400000));
-    return leftA - leftB;
+    const la = Math.max(0, a.day - Math.floor((Date.now() - a.time)/86400000));
+    const lb = Math.max(0, b.day - Math.floor((Date.now() - b.time)/86400000));
+    return la - lb;
   });
 
-  listEl.innerHTML = sorted.map(f => {
-    const left = Math.max(0, f.day - Math.floor((Date.now() - f.time) / 86400000));
-    let statusClass = 'normal';
-    let statusText = `${left} days`;
+  el.innerHTML = sorted.map((f, idx) => {
+    const left = Math.max(0, f.day - Math.floor((Date.now() - f.time)/86400000));
+    let cls = left === 0 ? 'expired' : left <= 2 ? 'warning' : 'normal';
+    let txt = left === 0 ? 'Expired' : left + ' days';
 
-    if (left === 0) {
-      statusClass = 'expired';
-      statusText = 'Expired';
-    } else if (left <= 2) {
-      statusClass = 'warning';
-    }
-
-    // 简易图标映射
-    const iconMap = {
-      'Vegetable': '🥕',
-      'Dairy': '🥛',
-      'Meat': '🥩',
-      'Fruit': '🍎',
-      'Other': '🥬'
-    };
+    const ico = {
+      Vegetable: '🥬',
+      Dairy: '🥛',
+      Meat: '🥩',
+      Fruit: '🍎',
+      Other: '🥦'
+    }[f.cate] || '🥦';
 
     return `
-      <div class="item-card">
-        <div class="item-icon">${iconMap[f.cate]}</div>
-        <div class="item-info">
-          <div class="item-name">${f.name}</div>
-          <div class="item-type">${f.cate}</div>
-        </div>
-        <div class="badge ${statusClass}">${statusText}</div>
+    <div class="item-card">
+      <div class="item-icon">${ico}</div>
+      <div class="item-info">
+        <div class="item-name">${f.name}</div>
+        <div class="item-type">${f.cate}</div>
       </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div class="badge ${cls}">${txt}</div>
+        <button class="edit-btn" onclick="startEdit(${idx})">编辑</button>
+      </div>
+    </div>
     `;
   }).join('');
 }
 
-// 初始化
 renderList();
 </script>
-
 </body>
 </html>
