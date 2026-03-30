@@ -3,18 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>我的冰箱</title>
+<title>冰箱</title>
 
-<!-- 苹果桌面图标（JPG 无透明，彻底解决黑边/百宝箱） -->
-<link rel="apple-touch-icon" sizes="180x180" href="https://cdn-icons-png.flaticon.com/512/105/105685.png?format=jpg">
-<link rel="apple-touch-icon" sizes="152x152" href="https://cdn-icons-png.flaticon.com/512/105/105685.png?format=jpg">
-<link rel="apple-touch-icon" sizes="120x120" href="https://cdn-icons-png.flaticon.com/512/105/105685.png?format=jpg">
-<link rel="apple-touch-icon" sizes="76x76" href="https://cdn-icons-png.flaticon.com/512/105/105685.png?format=jpg">
-
-<!-- 全屏模式 -->
+<!-- 这次不用任何外部图片，iOS 原生风格图标 -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="我的冰箱">
+<meta name="apple-mobile-web-app-title" content="冰箱">
 
 <style>
   * {
@@ -25,8 +19,6 @@
   }
   body {
     background: #F9F6F0;
-    background-image: radial-gradient(#EAE4D8 1px, transparent 1px);
-    background-size: 18px 18px;
     color: #333;
     max-width: 480px;
     margin: 0 auto;
@@ -205,21 +197,21 @@
 
 <script>
 const recipeDB = {
-  "土豆炖牛肉":{need:["牛肉","土豆","胡萝卜"],steps:["1.牛肉焯水去血沫","2.炒香葱姜，放入牛肉翻炒","3.加开水炖40分钟","4.放入土豆胡萝卜再炖20分钟","5.加盐出锅"]},
-  "番茄炖牛肉":{need:["牛肉","西红柿"],steps:["1.牛肉焯水","2.炒香番茄出汁","3.加水炖50分钟","4.调味出锅"]},
-  "青椒炒牛肉":{need:["牛肉","青椒"],steps:["1.牛肉腌制10分钟","2.热油快炒牛肉","3.放青椒翻炒","4.加盐出锅"]},
+  "土豆炖牛肉":{need:["牛肉","土豆","胡萝卜"],steps:["1.牛肉焯水去血沫","2.炒香葱姜","3.加水炖40分钟","4.加土豆再炖20分钟","5.加盐出锅"]},
+  "番茄炖牛肉":{need:["牛肉","西红柿"],steps:["1.焯水","2.炒番茄出汁","3.炖50分钟"]},
+  "青椒炒牛肉":{need:["牛肉","青椒"],steps:["1.腌制","2.快炒","3.加青椒"]},
   "红烧牛肉":{need:["牛肉"],steps:["1.焯水","2.炒糖色","3.炖50分钟"]},
-  "土豆炖牛腩":{need:["牛腩","土豆"],steps:["1.牛腩焯水","2.炖60分钟","3.加土豆炖20分钟"]},
-  "番茄炖牛腩":{need:["牛腩","西红柿"],steps:["1.牛腩焯水","2.炒番茄","3.炖60分钟"]},
+  "土豆炖牛腩":{need:["牛腩","土豆"],steps:["1.焯水","2.炖60分钟","3.加土豆"]},
+  "番茄炖牛腩":{need:["牛腩","西红柿"],steps:["1.焯水","2.炒番茄","3.炖60分钟"]},
   "红烧肉":{need:["猪肉"],steps:["1.焯水","2.炒糖色","3.炖40分钟"]},
-  "青椒炒肉":{need:["猪肉","青椒"],steps:["1.肉片腌制","2.大火快炒"]},
-  "白切鸡":{need:["鸡肉"],steps:["1.冷水煮15分钟","2.关火焖10分钟","3.切块蘸酱油"]},
+  "青椒炒肉":{need:["猪肉","青椒"],steps:["1.快炒肉片","2.加青椒"]},
+  "白切鸡":{need:["鸡肉"],steps:["1.煮15分钟","2.焖10分钟","3.蘸酱油"]},
   "可乐鸡腿":{need:["鸡腿","可乐"],steps:["1.焯水","2.煎黄","3.加可乐收汁"]},
-  "白灼虾":{need:["虾"],steps:["1.水开加姜片","2.放虾煮1分钟","3.捞出"]},
-  "虾仁滑蛋":{need:["虾","鸡蛋"],steps:["1.腌制虾仁","2.滑蛋","3.混合出锅"]},
-  "西红柿炒蛋":{need:["鸡蛋","西红柿"],steps:["1.鸡蛋打散","2.炒鸡蛋","3.炒西红柿","4.混合"]},
-  "蒜蓉娃娃菜":{need:["娃娃菜","大蒜"],steps:["1.焯水","2.炒蒜蓉淋上"]},
-  "酸辣土豆丝":{need:["土豆"],steps:["1.土豆切丝泡水","2.大火快炒","3.加醋盐"]}
+  "白灼虾":{need:["虾"],steps:["1.水开加姜","2.煮1分钟","3.捞出"]},
+  "虾仁滑蛋":{need:["虾","鸡蛋"],steps:["1.腌制虾仁","2.滑蛋","3.混合"]},
+  "西红柿炒蛋":{need:["鸡蛋","西红柿"],steps:["1.炒蛋","2.炒番茄","3.混合"]},
+  "蒜蓉娃娃菜":{need:["娃娃菜","大蒜"],steps:["1.焯水","2.淋蒜蓉"]},
+  "酸辣土豆丝":{need:["土豆"],steps:["1.切丝泡水","2.大火快炒"]}
 };
 const recipeMap = {
   "牛肉":["土豆炖牛肉","番茄炖牛肉","青椒炒牛肉","红烧牛肉"],
