@@ -6,7 +6,7 @@
 <title>食材管家</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system, BlinkMacSystemFont, sans-serif}
-  body{background:#F7F8FA;color:#333;max-width:480px;margin:0 auto;padding:24px 16px 120px}
+  body{background:#F5F0E6;color:#333;max-width:480px;margin:0 auto;padding:24px 16px 120px}
 
   .page{display:none}
   .page.active{display:block}
@@ -14,93 +14,92 @@
   .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
   .header-title{display:flex;align-items:center;gap:8px}
   .header-title .icon{font-size:22px}
-  .header-title .text{font-size:20px;font-weight:700;color:#1F2937}
+  .header-title .text{font-size:20px;font-weight:700;color:#6F7C4D}
 
   .add-btn{
     width:48px;height:48px;
     border-radius:16px;border:none;
-    background:#42A5F5;color:#fff;
+    background:#9CAF88;color:#fff;
     font-size:24px;
     display:flex;align-items:center;justify-content:center;
-    box-shadow:0 4px 12px rgba(66,165,245,0.25);
+    box-shadow:0 4px 12px rgba(156,175,136,0.25);
     cursor:pointer;
   }
 
   .food-card{
     background:#fff;border-radius:20px;
     padding:18px;margin-bottom:12px;
-    box-shadow:0 2px 12px rgba(0,0,0,0.04);
+    box-shadow:0 2px 10px rgba(156,175,136,0.08);
   }
   .food-row{display:flex;align-items:center;gap:14px}
   .food-icon{
     width:48px;height:48px;border-radius:14px;
-    background:#F1F5F9;display:flex;
+    background:#F5F0E6;display:flex;
     align-items:center;justify-content:center;
     font-size:22px;
   }
-  .food-name{font-size:17px;font-weight:600;color:#1F2937;margin-bottom:4px}
-  .food-info{font-size:13px;color:#8A919E;line-height:1.4;margin-bottom:6px}
+  .food-name{font-size:17px;font-weight:600;color:#6F7C4D;margin-bottom:4px}
+  .food-info{font-size:13px;color:#8A9A9B;line-height:1.4;margin-bottom:6px}
   .food-left{
     font-size:14px;
-    color:#6B7280;
+    color:#8A9A9B;
     margin-bottom:8px;
     padding:2px 6px;
     border-radius:4px;
-    background:#F3F4F6;
+    background:#E8DDD0;
     display:inline-block;
   }
 
-  .progress-bar{width:100%;height:6px;background:#F1F5F9;border-radius:3px;overflow:hidden}
-  .progress{height:100%;border-radius:3px;}
-  .progress-safe{background:#92B992}
-  .progress-warning{background:#F5C99A}
-  .progress-danger{background:#E5989B}
+  .progress-bar{width:100%;height:6px;background:#D0D8C0;border-radius:3px;overflow:hidden}
+  .progress-safe{background:#9CAF88}
+  .progress-warning{background:#F9E5C1}
+  .progress-danger{background:#B87C5E}
 
   .action-row{display:flex;gap:8px;margin-top:14px}
   .small-btn{
     flex:1;padding:10px;border-radius:12px;border:none;
-    background:#F1F5F9;color:#374151;font-size:14px;cursor:pointer;
+    background:#F5F0E6;color:#6F7C4D;font-size:14px;cursor:pointer;
   }
 
   .input-group{margin-bottom:18px}
-  .input-label{font-size:14px;font-weight:500;color:#374151;margin-bottom:8px}
+  .input-label{font-size:14px;font-weight:500;color:#6F7C4D;margin-bottom:8px}
   .input-field{
     width:100%;padding:16px;border-radius:14px;
-    border:1px solid #E5E7EB;background:#fff;font-size:15px;
+    border:1px solid #E8DDD0;background:#fff;font-size:15px;
   }
 
   .icon-group{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
   .tag-btn{
-    padding:10px 14px;border-radius:12px;background:#F1F5F9;
-    font-size:14px;color:#374151;border:none;cursor:pointer;
+    padding:10px 14px;border-radius:12px;background:#F5F0E6;
+    font-size:14px;color:#6F7C4D;border:none;cursor:pointer;
   }
-  .tag-btn.active{background:#42A5F5;color:#fff}
+  .tag-btn.active{background:#9CAF88;color:#fff}
 
   .btn-primary{
     width:100%;padding:16px;border-radius:14px;border:none;
-    background:#42A5F5;color:#fff;font-size:15px;font-weight:500;
+    background:#9CAF88;color:#fff;font-size:15px;font-weight:500;
     margin-top:8px;cursor:pointer;
   }
   .btn-outline{
     width:100%;padding:16px;border-radius:14px;
-    border:1px solid #E5E7EB;background:#fff;color:#374151;
+    border:1px solid #E8DDD0;background:#fff;color:#6F7C4D;
     font-size:15px;margin-top:8px;cursor:pointer;
   }
 
-  .recipe-panel{margin-top:16px;padding-top:16px;border-top:1px solid #F1F5F9}
-  .recipe-title{font-size:15px;font-weight:600;color:#1F2937;margin-bottom:12px}
+  .recipe-panel{margin-top:16px;padding-top:16px;border-top:1px solid #E8DDD0}
+  .recipe-title{font-size:15px;font-weight:600;color:#6F7C4D;margin-bottom:12px}
   .refresh-btn{
-    padding:8px 12px;border-radius:10px;background:#F1F5F9;
-    font-size:13px;border:none;cursor:pointer;margin-bottom:10px;
+    padding:8px 12px;border-radius:10px;background:#F5F0E6;
+    font-size:13px;border:none;cursor:pointer;margin-bottom:10px;color:#6F7C4D
   }
 
   .recipe-item{
-    background:#F9FAFB;border-radius:14px;padding:14px;margin-bottom:8px;
+    background:#F9F7F2;border-radius:14px;padding:14px;margin-bottom:8px;
   }
-  .recipe-name{font-size:15px;font-weight:600;color:#1F2937;margin-bottom:6px}
-  .material-list{font-size:13px;line-height:1.5;color:#6B7280}
-  .mat-have{color:#4B5563}
-  .mat-lack{color:#9CA3AF}
+  .recipe-name{font-size:15px;font-weight:600;color:#6F7C4D;margin-bottom:6px}
+  .material-list{font-size:13px;line-height:1.5;color:#8A9A9B}
+  .mat-have{color:#6F7C4D}
+  .mat-lack{color:#B8B9A7}
 </style>
 </head>
 <body>
@@ -121,7 +120,7 @@
     <div class="header-title">
       <span class="text">食材信息</span>
     </div>
-    <button class="add-btn" style="background:#9CA3AF;font-size:16px" onclick="goMain()">←</button>
+    <button class="add-btn" style="background:#8A9A9B;font-size:16px" onclick="goMain()">←</button>
   </div>
 
   <div class="input-group">
@@ -222,15 +221,29 @@ const emojiMap = {
   "白菜":"🥬","菠菜":"🥬","生菜":"🥬","油菜":"🥬","芹菜":"🥬","韭菜":"🌱",
   "番茄":"🍅","黄瓜":"🥒","冬瓜":"🥒","南瓜":"🎃","茄子":"🍆","青椒":"🫑",
   "土豆":"🥔","胡萝卜":"🥕","白萝卜":"🥕","莲藕":"🥢","西兰花":"🥦","花椰菜":"🥦",
-  "洋葱":"🧅","大蒜":"🧄",
+  "洋葱":"🧅","大蒜":"🧄","玉米":"🌽","山药":"🌿","豆腐":"🧈","鸡蛋":"🥚",
   "带鱼":"🐟","黄花鱼":"🐟","鲈鱼":"🐟","鲫鱼":"🐟","草鱼":"🐟",
   "对虾":"🦐","皮皮虾":"🦐","梭子蟹":"🦀","扇贝":"🦪","蛤蜊":"🦪","生蚝":"🦪",
   "鱿鱼":"🦑","海带":"🌿","紫菜":"🌿","三文鱼":"🐟","鳕鱼":"🐟"
 };
 
-const materialKeys = Object.keys(emojiMap);
+const materialKeys = [
+  "猪肉","排骨","牛肉","牛腩","羊肉","羊排","鸡肉","鸡翅","鸡腿","鸭肉","鸭脖","鹅肉","鸽子肉","兔肉","培根","火腿",
+  "白菜","菠菜","生菜","油菜","芹菜","韭菜","番茄","黄瓜","冬瓜","南瓜","茄子","青椒","土豆","胡萝卜","白萝卜",
+  "莲藕","西兰花","花椰菜","洋葱","大蒜","玉米","山药","豆腐","鸡蛋",
+  "带鱼","黄花鱼","鲈鱼","鲫鱼","草鱼","对虾","皮皮虾","梭子蟹","扇贝","蛤蜊","生蚝","鱿鱼","海带","紫菜","三文鱼","鳕鱼"
+];
+
 function getMaterials(recipeName) {
-  return materialKeys.filter(k => recipeName.includes(k));
+  const mats = materialKeys.filter(k => recipeName.includes(k));
+  if(recipeName.includes("鸡丁") && !mats.includes("鸡肉")) mats.push("鸡肉");
+  if(recipeName.includes("虾仁") && !mats.includes("对虾")) mats.push("对虾");
+  if(recipeName.includes("肉丝") && !mats.includes("猪肉")) mats.push("猪肉");
+  if(recipeName.includes("炒蛋") && !mats.includes("鸡蛋")) mats.push("鸡蛋");
+  if(recipeName.includes("豆腐") && !mats.includes("豆腐")) mats.push("豆腐");
+  if(recipeName.includes("山药") && !mats.includes("山药")) mats.push("山药");
+  if(recipeName.includes("玉米") && !mats.includes("玉米")) mats.push("玉米");
+  return mats;
 }
 
 let foods = JSON.parse(localStorage.getItem("foods")) || [];
@@ -322,7 +335,7 @@ function getStatus(f) {
 }
 
 function getIcon(name) {
-  return emojiMap[name] || "📦";
+  return emojiMap[name] || "🥦";
 }
 
 function shuffle(arr, seed) {
@@ -337,7 +350,7 @@ function shuffle(arr, seed) {
 function renderList() {
   const container = document.getElementById("listContainer");
   if (foods.length === 0) {
-    container.innerHTML = `<div style="text-align:center;padding:60px 20px;color:#9CA3AF">暂无食材，点击右上角 + 添加</div>`;
+    container.innerHTML = `<div style="text-align:center;padding:60px 20px;color:#8A9A9B">暂无食材，点击右上角 + 添加</div>`;
     return;
   }
   const sorted = [...foods]
@@ -364,7 +377,7 @@ function renderList() {
           </div>
           <div class="food-left">剩余 ${s.left} 天</div>
           <div class="progress-bar">
-            <div class="progress ${s.cls}" style="width:${s.ratio*100}%"></div>
+            <div class="${s.cls}" style="width:${s.ratio*100}%"></div>
           </div>
         </div>
       </div>
