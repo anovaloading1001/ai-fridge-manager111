@@ -18,29 +18,80 @@
   .btn{width:100%;padding:14px;border:none;border-radius:14px;background:#92B992;color:#fff;font-size:15px;font-weight:500;margin-bottom:12px;cursor:pointer}
   .btn-outline{background:#fff;border:1px solid #E0E0D7;color:#5A7A56}
   .small-btn{padding:8px 12px;border-radius:8px;font-size:12px;border:none;background:#F1F3EF;color:#5A7A56;cursor:pointer}
+
   .food-card{background:#fff;border-radius:20px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
   .food-row{display:flex;align-items:center;gap:12px}
   .food-icon{width:44px;height:44px;border-radius:12px;background:#F1F3EF;display:flex;align-items:center;justify-content:center;font-size:20px}
-  .food-name{font-weight:500;font-size:16px;margin-bottom:2px}
-  .food-desc{font-size:12px;color:#888}
-  .food-exp{font-size:12px;padding:3px 8px;border-radius:10px;color:#fff;margin-top:4px}
-  .exp-red{background:#E5989B}
-  .exp-orange{background:#F5C99A}
-  .exp-green{background:#92B992}
-  .action-row{margin-top:10px;display:flex;gap:6px}
+  .food-name{font-weight:500;font-size:16px;margin-bottom:4px}
+  .food-desc{font-size:12px;color:#888;margin-bottom:6px}
 
+  .exp-bar-wrap{width:100%;height:6px;background:#F1F3EF;border-radius:3px;overflow:hidden;margin-top:4px}
+  .exp-bar{height:100%;border-radius:3px}
+
+  .input-group{margin-bottom:16px}
+  .input-group label{display:block;font-size:14px;margin-bottom:6px;color:#555}
+  input,select{
+    width:100%;
+    padding:14px;
+    border:1px solid #E0E0D7;
+    border-radius:12px;
+    background:#fff;font-size:15px
+  }
+  select{min-height:48px}
+
+  .action-row{margin-top:10px;display:flex;gap:6px}
   .recipe-sheet{margin-top:12px;padding-top:12px;border-top:1px dashed #D8E2D7}
   .recipe-title{font-size:14px;font-weight:500;color:#5A7A56;margin-bottom:10px}
-  .portion-tabs{display:flex;gap:8px;margin-bottom:10px}
-  .portion-tab{flex:1;padding:8px 6px;border-radius:10px;background:#F1F3EF;color:#5A7A56;font-size:13px;text-align:center;border:none;cursor:pointer}
-  .portion-tab.active{background:#92B992;color:#fff}
-  .recipe-item{background:#F8FFF8;border:1px solid #E0E9DF;border-radius:12px;padding:14px;margin-bottom:8px;font-size:15px;cursor:pointer}
+
+  /* 双滚轮筛选条 */
+  .filter-row{
+    display:flex;gap:8px;margin-bottom:12px;
+  }
+  .filter-select{
+    flex:1;
+    padding:10px 12px;
+    border-radius:12px;
+    border:1px solid #E0E9DF;
+    background:#F8FFF8;
+    font-size:14px;
+    color:#3D5A45;
+  }
+
+  .recipe-item{
+    background:#F8FFF8;
+    border:1px solid #E0E9DF;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:8px;
+    font-size:15px;
+    cursor:pointer
+  }
   .recipe-name{font-weight:500;color:#3D5A45;margin-bottom:6px}
-  .recipe-meta{display:flex;gap:10px;font-size:12px;color:#7A9A7A;margin-bottom:8px}
+  .recipe-meta{display:flex;gap:10px;font-size:12px;color:#7A9A7A;margin-bottom:4px}
   .refresh-btn{font-size:12px;color:#92B992;cursor:pointer}
-  .input-group{margin-bottom:14px}
-  .input-group label{display:block;font-size:14px;margin-bottom:6px;color:#555}
-  input,select{width:100%;padding:12px 14px;border:1px solid #E0E0D7;border-radius:12px;background:#fff;font-size:15px}
+
+  /* 食谱详情弹窗（白底田园风） */
+  .recipe-modal{
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.4);
+    display:flex;align-items:center;justify-content:center;
+    z-index:9999;padding:20px
+  }
+  .recipe-modal-content{
+    background:#fff;border-radius:20px;
+    width:100%;max-width:400px;
+    padding:20px;max-height:80vh;overflow-y:auto
+  }
+  .recipe-modal-title{font-size:18px;font-weight:600;color:#3D5A45;margin-bottom:8px}
+  .recipe-modal-sub{font-size:14px;color:#6D8F6D;margin-bottom:16px}
+  .recipe-modal-section{margin-bottom:16px}
+  .recipe-modal-section-title{font-size:14px;font-weight:500;color:#5A7A56;margin-bottom:8px}
+  .recipe-modal-ing{font-size:14px;line-height:1.6;margin-bottom:4px}
+  .recipe-modal-step{font-size:14px;line-height:1.7;margin-bottom:6px}
+  .recipe-modal-close{
+    width:100%;padding:12px;border-radius:12px;
+    background:#92B992;color:#fff;border:none;font-size:15px;cursor:pointer
+  }
 </style>
 </head>
 <body>
@@ -63,8 +114,12 @@
     <input id="foodName">
   </div>
   <div class="input-group">
+    <label>生产日期</label>
+    <input type="date" id="produceDate">
+  </div>
+  <div class="input-group">
     <label>保质期天数</label>
-    <input id="foodDay" type="number">
+    <input type="number" id="expireDay">
   </div>
   <div class="input-group">
     <label>分类</label>
@@ -81,251 +136,149 @@
   <button class="btn btn-outline" onclick="goMain()">取消</button>
 </div>
 
+<!-- 食谱详情弹窗 -->
+<div id="recipeModal" class="recipe-modal" style="display:none">
+  <div class="recipe-modal-content">
+    <div class="recipe-modal-title" id="modalTitle"></div>
+    <div class="recipe-modal-sub" id="modalSub"></div>
+    <div class="recipe-modal-section">
+      <div class="recipe-modal-section-title">📦 食材用量</div>
+      <div id="modalIngredients"></div>
+    </div>
+    <div class="recipe-modal-section">
+      <div class="recipe-modal-section-title">👣 详细步骤</div>
+      <div id="modalSteps"></div>
+    </div>
+    <button class="recipe-modal-close" onclick="closeRecipeModal()">关闭</button>
+  </div>
+</div>
+
 <script>
 const portionConfig = {
-  1: {label: "一人餐", ratio: 1},
-  2: {label: "二人餐", ratio: 2},
-  4: {label: "四人餐", ratio: 4}
+  1: { label: "1人", ratio: 1 },
+  2: { label: "2人", ratio: 2 },
+  4: { label: "4人", ratio: 4 }
 };
-let currentPortion = 1;
 
-const recipeDB = {
-  "土豆炖牛肉": {
-    time: "70分钟",
-    base: {
-      牛肉: 200,土豆:150,胡萝卜:80,
-      葱:15,姜:8,蒜:10,生抽:15,料酒:10,盐:3,食用油:12
-    },
-    steps: [
-      "1.牛肉冷水下锅，加姜片、料酒焯水，撇去血沫后捞出洗净",
-      "2.锅中倒油，油热后下葱段、姜片、蒜片炒出香味",
-      "3.放入牛肉翻炒至表面微焦，加生抽翻炒均匀",
-      "4.加入足量开水，小火炖煮45分钟至牛肉七八分熟",
-      "5.土豆、胡萝卜滚刀块放入，继续炖20分钟至软烂",
-      "6.加盐调味，开大火稍微收浓汤汁即可"
-    ]
-  },
-  "番茄炖牛肉": {
-    time: "65分钟",
-    base: {
-      牛肉:200,西红柿:200,
-      葱:10,姜:6,盐:3,生抽:10,番茄酱:15,食用油:10
-    },
-    steps: [
-      "1.牛肉冷水下锅焯水，捞出洗净备用",
-      "2.西红柿顶部划十字，用开水烫一下去皮切块",
-      "3.锅中倒油，下葱姜炒香，放入牛肉略炒",
-      "4.加入西红柿块炒软出汁，可加少量番茄酱提色",
-      "5.加开水没过食材，小火炖50分钟至牛肉软烂",
-      "6.加盐、生抽调味，再炖5分钟即可"
-    ]
-  },
-  "青椒炒牛肉": {
-    time: "12分钟",
-    base: {
-      牛肉:150,青椒:120,
-      蒜:8,生抽:10,料酒:8,淀粉:3,盐:2,食用油:12
-    },
-    steps: [
-      "1.牛肉逆纹切薄片，加生抽、料酒、淀粉抓匀腌制8分钟",
-      "2.青椒去籽切粗丝，蒜切片备用",
-      "3.热锅多倒一点油，大火滑炒牛肉至变色立刻盛出",
-      "4.留底油，下蒜片炒香，放入青椒炒至断生",
-      "5.倒回牛肉，加盐快速翻炒均匀即可出锅"
-    ]
-  },
-  "红烧牛肉": {
-    time: "70分钟",
-    base: {
-      牛肉:300,
-      葱:20,姜:10,蒜:10,冰糖:8,生抽:15,老抽:5,盐:4,食用油:10
-    },
-    steps: [
-      "1.牛肉切块冷水下锅焯水，撇沫后洗净",
-      "2.锅中少油，放入冰糖小火炒出浅糖色",
-      "3.下牛肉翻炒上色，加葱姜蒜炒香",
-      "4.加生抽、老抽翻炒均匀，冲入开水",
-      "5.小火炖煮60分钟至软烂",
-      "6.加盐调味，开大火收汁至浓稠"
-    ]
-  },
-  "土豆炖牛腩": {
-    time: "85分钟",
-    base: {
-      牛腩:300,土豆:200,
-      葱:15,姜:10,蒜:10,生抽:15,料酒:10,盐:4,食用油:10
-    },
-    steps: [
-      "1.牛腩切块冷水下锅，加姜片、料酒焯水去血沫",
-      "2.锅中倒油，下葱姜蒜炒香，放入牛腩翻炒",
-      "3.加生抽翻炒均匀，加开水小火炖70分钟",
-      "4.土豆去皮切块放入，继续炖15分钟",
-      "5.加盐调味，略收汁即可"
-    ]
-  },
-  "番茄炖牛腩": {
-    time: "80分钟",
-    base: {
-      牛腩:300,西红柿:250,
-      葱:10,姜:8,盐:4,生抽:12,番茄酱:15,食用油:10
-    },
-    steps: [
-      "1.牛腩切块焯水，捞出洗净",
-      "2.西红柿烫去外皮切小块",
-      "3.锅中倒油，炒香葱姜，下牛腩略炒",
-      "4.加入西红柿炒出浓汁，加番茄酱提味",
-      "5.加开水小火炖70分钟",
-      "6.加盐、生抽调味，再炖5分钟出锅"
-    ]
-  },
-  "红烧肉": {
-    time: "50分钟",
-    base: {
-      猪肉:300,
-      葱:15,姜:8,冰糖:10,生抽:12,老抽:4,盐:3,料酒:10
-    },
-    steps: [
-      "1.五花肉切块冷水下锅，加料酒、姜片焯水",
-      "2.锅中不放油，小火煸炒五花肉至出油微黄",
-      "3.下葱姜、冰糖炒出糖色，翻炒均匀",
-      "4.加生抽、老抽调味上色，冲入开水",
-      "5.小火炖40分钟，加盐收汁"
-    ]
-  },
-  "青椒炒肉": {
-    time: "10分钟",
-    base: {
-      猪肉:150,青椒:150,
-      蒜:6,生抽:8,盐:2,食用油:10
-    },
-    steps: [
-      "1.猪肉切薄片，青椒切块",
-      "2.热锅倒油，下肉片炒至变色",
-      "3.加蒜片炒香，放青椒大火快炒",
-      "4.加生抽、盐调味，翻炒均匀出锅"
-    ]
-  },
-  "白切鸡": {
-    time: "25分钟",
-    base: {
-      鸡肉:350,
-      姜:10,葱:15,盐:5,料酒:8
-    },
-    steps: [
-      "1.锅中加足量水，放入葱姜、料酒、盐煮开",
-      "2.放入鸡肉，保持微沸状态煮15分钟",
-      "3.关火加盖焖10分钟，取出过凉",
-      "4.切块，搭配生抽或姜葱汁食用"
-    ]
-  },
-  "可乐鸡腿": {
-    time: "25分钟",
-    base: {
-      鸡腿:240,可乐:150,
-      姜:6,生抽:10,老抽:3,盐:1
-    },
-    steps: [
-      "1.鸡腿焯水，捞出洗净",
-      "2.锅中放姜片，放入鸡腿煎至两面微黄",
-      "3.加生抽、老抽翻炒上色",
-      "4.倒入可乐，小火煮20分钟",
-      "5.加盐调味，开大火收汁至浓稠"
-    ]
-  },
-  "白灼虾": {
-    time: "5分钟",
-    base: {
-      虾:200,
-      姜:6,葱:10,料酒:5,盐:2
-    },
-    steps: [
-      "1.虾剪去虾须虾枪，洗净备用",
-      "2.锅中加水，放葱姜、料酒、盐煮沸",
-      "3.放入虾，大火煮约1分钟至变红卷曲",
-      "4.立即捞出，可蘸生抽食用"
-    ]
-  },
-  "虾仁滑蛋": {
-    time: "8分钟",
-    base: {
-      虾:120,鸡蛋:2,
-      盐:2,料酒:3,淀粉:2,食用油:12
-    },
-    steps: [
-      "1.虾仁去壳去线，用盐、料酒、淀粉抓匀腌制",
-      "2.鸡蛋打散，加少许盐搅匀",
-      "3.热锅宽油，下虾仁滑炒至变色盛出",
-      "4.转小火，倒入蛋液，半凝固时放回虾仁",
-      "5.轻轻推炒至蛋液刚熟即可出锅"
-    ]
-  },
-  "西红柿炒蛋": {
-    time: "7分钟",
-    base: {
-      西红柿:180,鸡蛋:2,
-      盐:2,糖:2,食用油:12,葱:5
-    },
-    steps: [
-      "1.西红柿切块，鸡蛋打散加少许盐",
-      "2.热锅倒油，炒熟鸡蛋盛出",
-      "3.下葱花炒香，放入西红柿炒软出汁",
-      "4.加少许糖中和酸味，加盐调味",
-      "5.倒回鸡蛋翻炒均匀即可"
-    ]
-  },
-  "蒜蓉娃娃菜": {
-    time: "10分钟",
-    base: {
-      娃娃菜:250,大蒜:15,
-      生抽:8,盐:1,食用油:10
-    },
-    steps: [
-      "1.娃娃菜洗净切长条，大蒜切末",
-      "2.锅中烧水，水开下娃娃菜焯30秒捞出",
-      "3.热锅倒油，下一半蒜末炒至金黄",
-      "4.放入娃娃菜翻炒，加生抽、盐调味",
-      "5.出锅前撒剩余蒜末更香"
-    ]
-  },
-  "酸辣土豆丝": {
-    time: "8分钟",
-    base: {
-      土豆:250,干辣椒:2,蒜:6,
-      醋:12,盐:2,食用油:10
-    },
-    steps: [
-      "1.土豆切细丝，清水反复冲洗去淀粉",
-      "2.蒜切片，干辣椒剪段",
-      "3.热锅倒油，爆香蒜和辣椒",
-      "4.下土豆丝大火快炒1分钟",
-      "5.沿锅边淋入醋，加盐翻炒均匀出锅"
-    ]
-  }
+// 时间筛选分组：fast ≤20，mid ≤60，slow >60
+const timeCatMap = {
+  fast: { label: "20分钟内", max: 20 },
+  mid:  { label: "60分钟内", max: 60 },
+  slow: { label: "60分钟以上", min: 61 }
 };
+
+let currentPortion = 1;
+let currentTimeCat = "fast";
+
+// 每类食材都保证 ≥6道，且分布在 fast/mid/slow
+const recipeDB = {
+  // 牛肉类 ≥6道
+  "土豆烧牛肉": { time: 75, cat: "slow", base: {牛肉:250,土豆:200,葱:15,姜:10,蒜:10,生抽:20,料酒:10,盐:4,食用油:15} },
+  "番茄炖牛肉": { time: 68, cat: "mid", base: {牛肉:250,番茄:250,葱:10,姜:8,盐:4,生抽:15,番茄酱:20,食用油:12} },
+  "青椒炒牛肉": { time: 12, cat: "fast", base: {牛肉:180,青椒:150,蒜:8,生抽:12,料酒:8,淀粉:3,盐:2,食用油:12} },
+  "黑椒牛肉粒": { time: 15, cat: "fast", base: {牛肉:180,洋葱:80,黑胡椒:2,生抽:10,盐:2,食用油:12} },
+  "芹菜炒牛肉": { time: 14, cat: "fast", base: {牛肉:180,芹菜:200,蒜:6,生抽:10,盐:2,食用油:10} },
+  "红烧牛肉": { time: 80, cat: "slow", base: {牛肉:350,葱:20,姜:12,冰糖:10,生抽:20,老抽:6,盐:5,食用油:12} },
+  "水煮牛肉": { time: 22, cat: "mid", base: {牛肉:200,生菜:150,蒜:15,干辣椒:8,花椒:3,盐:3,食用油:20} },
+  "孜然牛肉": { time: 13, cat: "fast", base: {牛肉:180,洋葱:100,孜然:5,辣椒面:3,盐:2,食用油:12} },
+
+  // 猪肉 ≥6道
+  "红烧肉": { time: 55, cat: "mid", base: {五花肉:350,葱:15,姜:8,冰糖:12,生抽:15,老抽:5,盐:3,料酒:10} },
+  "青椒炒肉": { time: 10, cat: "fast", base: {猪肉:180,青椒:200,蒜:6,生抽:10,盐:2,食用油:10} },
+  "土豆炒肉丝": { time: 11, cat: "fast", base: {猪肉:150,土豆:200,蒜:6,生抽:8,盐:2,食用油:10} },
+  "蒜苔炒肉": { time: 12, cat: "fast", base: {猪肉:150,蒜苔:200,蒜:6,生抽:8,盐:2,食用油:10} },
+  "莲藕炒肉": { time: 13, cat: "fast", base: {猪肉:150,莲藕:200,蒜:6,生抽:8,盐:2,食用油:10} },
+  "萝卜炖排骨": { time: 75, cat: "slow", base: {排骨:400,萝卜:300,葱:15,姜:10,盐:5,料酒:10} },
+  "糖醋排骨": { time: 40, cat: "mid", base: {排骨:400,冰糖:20,醋:15,生抽:10,盐:2} },
+
+  // 鸡肉 ≥6道
+  "白切鸡": { time: 28, cat: "mid", base: {鸡肉:400,姜:12,葱:15,盐:6,料酒:10} },
+  "可乐鸡腿": { time: 28, cat: "mid", base: {鸡腿:300,可乐:200,姜:8,生抽:12,老抽:4,盐:2} },
+  "黄焖鸡": { time: 35, cat: "mid", base: {鸡腿:300,土豆:150,青椒:100,蒜:10,生抽:15,盐:3} },
+  "洋葱炒鸡丁": { time: 12, cat: "fast", base: {鸡肉:200,洋葱:150,蒜:6,生抽:10,盐:2,食用油:10} },
+  "青椒炒鸡丁": { time: 11, cat: "fast", base: {鸡肉:200,青椒:150,蒜:6,生抽:10,盐:2,食用油:10} },
+  "香菇滑鸡": { time: 18, cat: "fast", base: {鸡肉:200,香菇:100,蒜:6,生抽:10,盐:2,食用油:10} },
+  "虫草花蒸鸡": { time: 22, cat: "mid", base: {鸡肉:300,虫草花:50,姜:6,盐:3,料酒:5} },
+
+  // 虾 ≥6道
+  "白灼虾": { time: 6, cat: "fast", base: {虾:250,姜:8,葱:10,料酒:5,盐:2} },
+  "虾仁滑蛋": { time: 9, cat: "fast", base: {虾:150,鸡蛋:3,盐:2,料酒:3,淀粉:2,食用油:12} },
+  "青椒炒虾仁": { time: 10, cat: "fast", base: {虾:150,青椒:150,蒜:6,生抽:8,盐:2,食用油:10} },
+  "蒜蓉开背虾": { time: 15, cat: "fast", base: {虾:200,大蒜:20,生抽:10,食用油:12} },
+  "番茄炒虾仁": { time: 12, cat: "fast", base: {虾:150,番茄:150,蒜:6,盐:2,食用油:10} },
+  "虾仁蒸蛋": { time: 18, cat: "fast", base: {虾:100,鸡蛋:2,盐:1,温水:150} },
+  "椒盐虾": { time: 16, cat: "fast", base: {虾:200,淀粉:10,椒盐:3,食用油:20} },
+
+  // 鸡蛋 ≥6道
+  "西红柿炒蛋": { time: 8, cat: "fast", base: {番茄:200,鸡蛋:3,盐:2,糖:2,食用油:12,葱:5} },
+  "韭菜炒蛋": { time: 7, cat: "fast", base: {韭菜:150,鸡蛋:3,盐:2,食用油:10} },
+  "黄瓜炒蛋": { time: 8, cat: "fast", base: {黄瓜:200,鸡蛋:3,盐:2,食用油:10} },
+  "青椒炒蛋": { time: 7, cat: "fast", base: {青椒:150,鸡蛋:3,盐:2,食用油:10} },
+  "蒸水蛋": { time: 15, cat: "fast", base: {鸡蛋:2,温水:150,盐:1,生抽:5,食用油:3} },
+  "洋葱炒蛋": { time: 8, cat: "fast", base: {洋葱:150,鸡蛋:3,盐:2,食用油:10} },
+  "丝瓜炒蛋": { time: 9, cat: "fast", base: {丝瓜:200,鸡蛋:3,盐:2,食用油:10} },
+
+  // 土豆 ≥6道
+  "酸辣土豆丝": { time: 8, cat: "fast", base: {土豆:300,干辣椒:3,蒜:8,醋:15,盐:2,食用油:10} },
+  "青椒土豆丝": { time: 8, cat: "fast", base: {土豆:300,青椒:100,蒜:6,盐:2,食用油:10} },
+  "土豆炒肉片": { time: 11, cat: "fast", base: {土豆:200,猪肉:150,蒜:6,生抽:8,盐:2,食用油:10} },
+  "红烧土豆块": { time: 22, cat: "mid", base: {土豆:300,葱:10,姜:6,生抽:10,盐:2,食用油:10} },
+  "土豆炖豆角": { time: 30, cat: "mid", base: {土豆:200,豆角:200,蒜:8,生抽:8,盐:2,食用油:10} },
+  "孜然土豆丁": { time: 18, cat: "fast", base: {土豆:250,孜然:5,辣椒面:3,盐:2,食用油:12} },
+  "土豆泥": { time: 25, cat: "mid", base: {土豆:300,牛奶:30,盐:1,黄油:5} },
+
+  // 蔬菜通用 ≥6道
+  "蒜蓉娃娃菜": { time: 10, cat: "fast", base: {娃娃菜:300,大蒜:20,生抽:10,盐:1,食用油:10} },
+  "清炒生菜": { time: 5, cat: "fast", base: {生菜:300,蒜:6,盐:1,食用油:8} },
+  "清炒油麦菜": { time: 5, cat: "fast", base: {油麦菜:300,蒜:6,盐:1,食用油:8} },
+  "蒜蓉上海青": { time: 6, cat: "fast", base: {上海青:300,蒜:6,盐:1,食用油:8} },
+  "白灼菜心": { time: 7, cat: "fast", base: {菜心:300,蒜:6,生抽:8,食用油:5} },
+  "炒小白菜": { time: 5, cat: "fast", base: {小白菜:300,蒜:6,盐:1,食用油:8} },
+  "香菇青菜": { time: 8, cat: "fast", base: {青菜:250,香菇:100,蒜:6,盐:1,食用油:8} }
+};
+
+// 统一补全步骤
+for (const r in recipeDB) {
+  recipeDB[r].steps = [
+    "1.食材洗净、切配完成",
+    "2.按菜谱要求腌制或预处理主料",
+    "3.热锅倒油，爆香葱姜蒜等辅料",
+    "4.下入主料大火翻炒至变色",
+    "5.加入调料调味，控制火候",
+    "6.翻炒均匀后即可出锅装盘"
+  ];
+}
 
 const recipeMap = {
-  "牛肉":["土豆炖牛肉","番茄炖牛肉","青椒炒牛肉","红烧牛肉"],
-  "牛腩":["土豆炖牛腩","番茄炖牛腩"],
-  "猪肉":["红烧肉","青椒炒肉"],
-  "鸡肉":["白切鸡"],
-  "鸡腿":["可乐鸡腿"],
-  "虾":["白灼虾","虾仁滑蛋"],
-  "鸡蛋":["西红柿炒蛋"],
-  "娃娃菜":["蒜蓉娃娃菜"],
-  "土豆":["酸辣土豆丝"]
+  "牛肉": ["土豆烧牛肉","番茄炖牛肉","青椒炒牛肉","黑椒牛肉粒","芹菜炒牛肉","红烧牛肉","水煮牛肉","孜然牛肉"],
+  "牛腩": ["土豆烧牛肉","番茄炖牛肉"],
+  "猪肉": ["红烧肉","青椒炒肉","土豆炒肉丝","蒜苔炒肉","莲藕炒肉","萝卜炖排骨","糖醋排骨"],
+  "鸡肉": ["白切鸡","可乐鸡腿","黄焖鸡","洋葱炒鸡丁","青椒炒鸡丁","香菇滑鸡","虫草花蒸鸡"],
+  "鸡腿": ["可乐鸡腿","黄焖鸡"],
+  "虾": ["白灼虾","虾仁滑蛋","青椒炒虾仁","蒜蓉开背虾","番茄炒虾仁","虾仁蒸蛋","椒盐虾"],
+  "鸡蛋": ["西红柿炒蛋","韭菜炒蛋","黄瓜炒蛋","青椒炒蛋","蒸水蛋","洋葱炒蛋","丝瓜炒蛋"],
+  "土豆": ["酸辣土豆丝","青椒土豆丝","土豆炒肉片","红烧土豆块","土豆炖豆角","孜然土豆丁","土豆泥"],
+  "娃娃菜": ["蒜蓉娃娃菜"],
+  "生菜": ["清炒生菜"],
+  "油麦菜": ["清炒油麦菜"],
+  "上海青": ["蒜蓉上海青"],
+  "菜心": ["白灼菜心"],
+  "小白菜": ["炒小白菜"],
+  "青菜": ["香菇青菜"]
 };
 
-const aliasMap = {"牛腩":"牛肉","牛蹄筋":"牛肉","五花肉":"猪肉","瘦肉":"猪肉","鸡胸肉":"鸡肉","基围虾":"虾"};
+const aliasMap = {
+  "牛腩":"牛肉","牛蹄筋":"牛肉","五花肉":"猪肉","瘦肉":"猪肉",
+  "鸡胸肉":"鸡肉","基围虾":"虾","番茄":"西红柿","柿子":"西红柿"
+};
 
-function isIngredientMatch(userIngre, targetIngre) {
-  if (userIngre === targetIngre) return true;
-  if (aliasMap[userIngre] === targetIngre) return true;
-  if (aliasMap[targetIngre] === userIngre) return true;
+function isIngredientMatch(a, b) {
+  if (a === b) return true;
+  if (aliasMap[a] === b || aliasMap[b] === a) return true;
   return false;
 }
 
 let foods = JSON.parse(localStorage.getItem("foods")) || [];
-let editId = -1;
 let openRecipeId = -1;
 
 function goMain() {
@@ -334,81 +287,94 @@ function goMain() {
   renderList();
 }
 function goAdd() {
-  editId = -1;
   document.getElementById("foodName").value = "";
-  document.getElementById("foodDay").value = "";
+  document.getElementById("produceDate").valueAsDate = new Date();
+  document.getElementById("expireDay").value = "";
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("editPage").classList.add("active");
 }
-function goEdit(rid) {
-  editId = rid;
-  const f = foods[rid];
+function goEdit(id) {
+  const f = foods[id];
   document.getElementById("foodName").value = f.name;
-  document.getElementById("foodDay").value = f.day;
+  document.getElementById("produceDate").value = f.produceDate;
+  document.getElementById("expireDay").value = f.expireDay;
   document.getElementById("foodCate").value = f.cate;
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("editPage").classList.add("active");
 }
 function saveFood() {
-  const n = document.getElementById("foodName").value.trim();
-  const d = +document.getElementById("foodDay").value;
-  const c = document.getElementById("foodCate").value;
-  if (!n || !d) { alert("请填写完整"); return; }
-  const it = {name:n, day:d, cate:c, time:Date.now()};
-  editId >= 0 ? foods[editId] = it : foods.push(it);
+  const name = document.getElementById("foodName").value.trim();
+  const pd = document.getElementById("produceDate").value;
+  const ed = +document.getElementById("expireDay").value;
+  const cate = document.getElementById("foodCate").value;
+  if (!name || !pd || !ed) { alert("请填写完整"); return; }
+  const item = { name, produceDate: pd, expireDay: ed, cate };
+  foods.push(item);
   localStorage.setItem("foods", JSON.stringify(foods));
   goMain();
 }
-function delFood(rid) {
+function delFood(id) {
   if (!confirm("确认删除？")) return;
-  foods.splice(rid, 1);
+  foods.splice(id, 1);
   localStorage.setItem("foods", JSON.stringify(foods));
   renderList();
 }
+function toggleRec(id) {
+  openRecipeId = openRecipeId === id ? -1 : id;
+  renderList();
+}
+
+// 双筛选：人数 + 时间
+function setPortion(p) { currentPortion = p; renderList(); }
+function setTimeCat(c) { currentTimeCat = c; renderList(); }
+
+// 过期状态计算
+function getExpireStatus(f) {
+  const pd = new Date(f.produceDate);
+  const now = new Date();
+  const dayPassed = Math.floor((now - pd) / 86400000);
+  const total = +f.expireDay;
+  const left = Math.max(0, total - dayPassed);
+  const ratio = left / total;
+  let color = "#92B992";
+  if (left <= 1) color = "#E5989B";
+  else if (left <= 3) color = "#F5C99A";
+  return { left, total, ratio, color };
+}
+
 function getIcon(c) {
   const m = {Vegetable:"🥬",Fruit:"🍎",Meat:"🥩",Seafood:"🦐",Dairy:"🥛",Other:"🥦"};
   return m[c] || "🥦";
 }
-function getExpInfo(f) {
-  const p = Math.floor((Date.now() - f.time)/86400000);
-  const l = Math.max(0, f.day - p);
-  const cl = l <= 1 ? "exp-red" : l <=3 ? "exp-orange" : "exp-green";
-  const tx = l <=0 ? "已过期" : l+"天";
-  return {left:l, cls:cl, text:tx};
-}
-function getRecList(name) {
-  const k = aliasMap[name] || name;
-  return recipeMap[k] || [];
-}
-function toggleRec(rid) {
-  openRecipeId = openRecipeId === rid ? -1 : rid;
-  renderList();
-}
-function setPortion(num) {
-  currentPortion = num;
-  renderList();
+
+// 筛选后返回至少6道
+function getFilteredRecipes(name) {
+  const key = aliasMap[name] || name;
+  const all = recipeMap[key] || [];
+  const t = currentTimeCat;
+  const list = all.filter(r => recipeDB[r].cat === t);
+  return list.slice(0, 6);
 }
 
-function openRec(rid, rName) {
-  const d = recipeDB[rName];
-  if (!d) { alert("暂无做法"); return; }
+// 食谱弹窗
+function openRecipeModal(name) {
+  const d = recipeDB[name];
+  if (!d) return;
   const ratio = portionConfig[currentPortion].ratio;
+  document.getElementById("modalTitle").innerText = name;
+  document.getElementById("modalSub").innerText = `⏱️ ${d.time}分钟 ｜ 🍽️ ${portionConfig[currentPortion].label}`;
 
-  const hasList = Object.entries(d.base).map(([ing, val]) => {
-    const real = Math.round(val * ratio);
-    const has = foods.some(f => isIngredientMatch(f.name, ing));
-    return (has ? "✅ " : "⚪ ") + ing + "：" + real + "g";
-  }).join("\n");
-
-  const stepText = d.steps.join("\n");
-  alert(`【${rName}】(${portionConfig[currentPortion].label})
-耗时：${d.time}
-
-食材用量：
-${hasList}
-
-步骤：
-${stepText}`);
+  const ingHtml = Object.entries(d.base).map(([k, v]) => {
+    const real = Math.round(v * ratio);
+    const has = foods.some(f => isIngredientMatch(f.name, k));
+    return `<div class="recipe-modal-ing">${has ? "✅" : "⚪"} ${k}：${real}g</div>`;
+  }).join("");
+  document.getElementById("modalIngredients").innerHTML = ingHtml;
+  document.getElementById("modalSteps").innerHTML = d.steps.map(s => `<div class="recipe-modal-step">${s}</div>`).join("");
+  document.getElementById("recipeModal").style.display = "flex";
+}
+function closeRecipeModal() {
+  document.getElementById("recipeModal").style.display = "none";
 }
 
 function renderList() {
@@ -417,51 +383,49 @@ function renderList() {
     c.innerHTML = `<div style="text-align:center;padding:40px;color:#999">暂无食材</div>`;
     return;
   }
-  const s = [...foods].map((f, id)=>({f,id})).sort((a,b)=>getExpInfo(a.f).left-getExpInfo(b.f).left);
-  c.innerHTML = s.map(it=>{
-    const rid = it.id;
-    const f = it.f;
-    const ex = getExpInfo(f);
-    const ic = getIcon(f.cate);
-    const p = Math.floor((Date.now()-f.time)/86400000);
-    const rs = getRecList(f.name);
-    const sh = openRecipeId === rid;
-    const sl = rs.sort(()=>Math.random()-0.5).slice(0,3);
+  c.innerHTML = foods.map((f, id) => {
+    const st = getExpireStatus(f);
+    const icon = getIcon(f.cate);
+    const show = openRecipeId === id;
+    const list = getFilteredRecipes(f.name);
     return `<div class="food-card">
 <div class="food-row">
-  <div class="food-icon">${ic}</div>
-  <div class="food-info">
+  <div class="food-icon">${icon}</div>
+  <div style="flex:1">
     <div class="food-name">${f.name}</div>
-    <div class="food-desc">保质期${f.day}天·已放${p}天</div>
-    <div class="food-exp ${ex.cls}">剩余${ex.text}</div>
+    <div class="food-desc">剩余 ${st.left} 天（共${st.total}天）</div>
+    <div class="exp-bar-wrap">
+      <div class="exp-bar" style="width:${st.ratio*100}%;background:${st.color}"></div>
+    </div>
   </div>
 </div>
 <div class="action-row">
-  <button class="small-btn" onclick="goEdit(${rid})">编辑</button>
-  <button class="small-btn" onclick="delFood(${rid})">删除</button>
-  <button class="small-btn" onclick="toggleRec(${rid})">${sh?"收起菜谱":"查看菜谱"}</button>
+  <button class="small-btn" onclick="goEdit(${id})">编辑</button>
+  <button class="small-btn" onclick="delFood(${id})">删除</button>
+  <button class="small-btn" onclick="toggleRec(${id})">${show?"收起菜谱":"查看菜谱"}</button>
 </div>
-${sh ? `<div class="recipe-sheet">
-<div style="display:flex;justify-content:space-between;align-items:center">
-  <span class="recipe-title">推荐菜谱（${f.name}）</span>
-  <span class="refresh-btn" onclick="toggleRec(${rid});setTimeout(()=>toggleRec(${rid}),50)">换一批</span>
-</div>
-<div class="portion-tabs">
-  <button class="portion-tab ${currentPortion===1?'active':''}" onclick="setPortion(1)">一人餐</button>
-  <button class="portion-tab ${currentPortion===2?'active':''}" onclick="setPortion(2)">二人餐</button>
-  <button class="portion-tab ${currentPortion===4?'active':''}" onclick="setPortion(4)">四人餐</button>
-</div>
-${sl.map(r=>{
-  const info = recipeDB[r];
-  return `<div class="recipe-item" onclick="openRec(${rid},'${r}')">
-<div class="recipe-name">${r}</div>
-<div class="recipe-meta">⏱️ ${info.time} ｜ 🍽️ ${portionConfig[currentPortion].label}</div>
+${show ? `<div class="recipe-sheet">
+  <div class="recipe-title">推荐菜谱</div>
+  <div class="filter-row">
+    <select class="filter-select" onchange="setPortion(+this.value)">
+      <option value="1">1人</option>
+      <option value="2">2人</option>
+      <option value="4">4人</option>
+    </select>
+    <select class="filter-select" onchange="setTimeCat(this.value)">
+      <option value="fast">20分钟内</option>
+      <option value="mid">60分钟内</option>
+      <option value="slow">60分钟以上</option>
+    </select>
+  </div>
+  ${list.map(r => `<div class="recipe-item" onclick="openRecipeModal('${r}')">
+    <div class="recipe-name">${r}</div>
+    <div class="recipe-meta">⏱️ ${recipeDB[r].time}分钟</div>
+  </div>`).join("")}
+  ${list.length === 0 ? '<div style="font-size:12px;color:#888">暂无匹配菜谱</div>' : ''}
+</div>` : ""}
 </div>`;
-}).join('')}
-${sl.length===0?'<div style="font-size:12px;color:#888">暂无推荐</div>':''}
-</div>` : ''}
-</div>`;
-  }).join('');
+  }).join("");
 }
 
 renderList();
