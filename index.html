@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>冰箱食材管理</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Fridge</title>
 <style>
   * {
     margin: 0;
@@ -11,148 +11,130 @@
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
+  /* 核心背景：米白色 + 点状网格纹理 */
   body {
-    background: #F8F5F0;
-    color: #4A453E;
+    background: #F9F6F0;
+    background-image: radial-gradient(#EAE4D8 1px, transparent 1px);
+    background-size: 18px 18px;
+    color: #333;
     max-width: 480px;
     margin: 0 auto;
-    padding-bottom: 90px;
+    padding: 20px 16px 90px;
   }
-  .page {
-    display: none;
-    padding: 24px 20px;
-  }
-  .page.active {
-    display: block;
-    animation: fadeIn 0.25s ease forwards;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .page { display: none; }
+  .page.active { display: block; }
   .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .title {
     font-size: 22px;
     font-weight: 600;
-    color: #6A7764;
-    margin-bottom: 24px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 8px;
   }
-  .back {
+  .icon {
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
     font-size: 18px;
-    cursor: pointer;
-    padding: 4px 10px;
   }
-  .card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 3px 12px rgba(110, 120, 100, 0.06);
-    margin-bottom: 16px;
-  }
-  .btn {
-    background: #A1C194;
-    color: #fff;
-    border: none;
-    padding: 14px 18px;
-    border-radius: 16px;
-    width: 100%;
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 12px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .btn:hover {
-    background: #92B383;
-  }
-  .btn-outline {
-    background: transparent;
-    border: 1px solid #A1C194;
-    color: #6A7764;
-  }
-  .input,
-  .select {
-    width: 100%;
-    border: 1px solid #EAE5DD;
-    border-radius: 14px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
-    outline: none;
-    font-size: 15px;
-    background: #fff;
-  }
-  .food-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 0;
-    border-bottom: 1px solid #F3EEE5;
-  }
-  .food-item:last-child {
-    border-bottom: none;
-  }
-  .food-name {
-    font-weight: 500;
-    font-size: 15px;
-  }
-  .food-info {
-    font-size: 13px;
-    color: #908A7F;
-    margin-top: 4px;
-  }
-  .tag {
+  .badge {
+    padding: 6px 12px;
+    border-radius: 999px;
     font-size: 12px;
-    padding: 4px 8px;
-    border-radius: 10px;
     font-weight: 500;
+    color: #fff;
   }
-  .tag.red {
-    background: #FDEAEA;
-    color: #D87777;
+  /* 列表卡片 */
+  .item-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
   }
-  .tag.orange {
-    background: #FEF2E2;
-    color: #E2A26A;
+  /* 极简图标样式 */
+  .item-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #F8F5F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
   }
-  .tag.green {
-    background: #E8F2E9;
-    color: #70A075;
-  }
-  .del {
-    font-size: 13px;
-    color: #BAB3A8;
-    cursor: pointer;
-    margin-top: 6px;
-  }
-  .empty {
-    text-align: center;
-    padding: 40px 20px;
-    color: #B0A99E;
-  }
+  .item-info { flex: 1; }
+  .item-name { font-weight: 500; font-size: 16px; }
+  .item-type { font-size: 13px; color: #888; margin-top: 2px; }
+  /* 状态标签颜色 */
+  .expired { background: #E57373; } /* 红色 */
+  .warning { background: #F5B767; }   /* 橙色 */
+  .normal { background: #70A984; }    /* 绿色 */
+  /* 底部导航 */
   .nav {
     position: fixed;
-    bottom: 0;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 100%;
+    width: 90%;
     max-width: 480px;
     background: #fff;
-    border-top: 1px solid #F0EAE0;
+    border-radius: 20px;
     display: flex;
     justify-content: space-around;
     padding: 16px 0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
   }
   .nav-item {
     font-size: 12px;
-    color: #8A857C;
-    text-align: center;
+    color: #888;
     cursor: pointer;
   }
   .nav-item.active {
-    color: #7B9270;
+    color: #70A984;
+    font-weight: 600;
+  }
+  /* 添加页样式 */
+  .input-group { margin-bottom: 16px; }
+  .input-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #666;
+  }
+  input, select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #EAE4D8;
+    border-radius: 14px;
+    font-size: 16px;
+    background: #fff;
+  }
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: #70A984;
+    color: #fff;
+    font-size: 16px;
     font-weight: 500;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid #EAE4D8;
+    color: #666;
   }
 </style>
 </head>
@@ -160,98 +142,134 @@
 
 <!-- 列表页 -->
 <div class="page active" id="list">
-  <div class="header">🥦 冰箱食材管理</div>
-  <button class="btn" onclick="go('add')">➕ 添加食材</button>
-  <div class="card" id="listWrap"></div>
+  <div class="header">
+    <div class="title">
+      <span class="icon">🌱</span>
+      <span>My Fridge</span>
+    </div>
+    <div class="badge normal">Me</div>
+  </div>
+
+  <div id="itemList">
+    <!-- 食材卡片会通过JS渲染 -->
+  </div>
 </div>
 
 <!-- 添加页 -->
 <div class="page" id="add">
   <div class="header">
-    <div class="back" onclick="go('list')">←</div>
-    <div>添加食材</div>
-    <div></div>
+    <div class="title" onclick="go('list')">← 返回</div>
   </div>
-  <input class="input" id="name" placeholder="食材名称" />
-  <input class="input" id="day" type="number" placeholder="保质期天数" />
-  <select class="select" id="cate">
-    <option value="蔬菜">蔬菜</option>
-    <option value="肉类">肉类</option>
-    <option value="蛋奶">蛋奶</option>
-    <option value="水果">水果</option>
-    <option value="其他">其他</option>
-  </select>
-  <button class="btn" onclick="save()">保存</button>
+
+  <div class="input-group">
+    <label>食材名称</label>
+    <input type="text" id="name" placeholder="例如：Tomatoes">
+  </div>
+
+  <div class="input-group">
+    <label>剩余天数</label>
+    <input type="number" id="day" placeholder="例如：4">
+  </div>
+
+  <div class="input-group">
+    <label>食材分类</label>
+    <select id="cate">
+      <option value="Vegetable">蔬菜 (Vegetable)</option>
+      <option value="Dairy">蛋奶 (Dairy)</option>
+      <option value="Meat">肉类 (Meat)</option>
+      <option value="Fruit">水果 (Fruit)</option>
+      <option value="Other">其他 (Other)</option>
+    </select>
+  </div>
+
+  <button class="btn" onclick="saveFood()">保存</button>
   <button class="btn btn-outline" onclick="go('list')">取消</button>
 </div>
 
+<!-- 底部导航 -->
 <div class="nav">
-  <div class="nav-item" onclick="go('list')">📋 食材列表</div>
-  <div class="nav-item" onclick="go('add')">➕ 添加</div>
+  <div class="nav-item active" onclick="go('list')">📋 食材列表</div>
+  <div class="nav-item" onclick="go('add')">➕ 添加食材</div>
 </div>
 
 <script>
-let foods = JSON.parse(localStorage.getItem('foods')) || []
+let foods = JSON.parse(localStorage.getItem('fridgeFoods')) || [];
 
-function go(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
-  document.getElementById(id).classList.add('active')
+// 页面切换
+function go(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
 }
 
-function save() {
-  const name = document.getElementById('name').value.trim()
-  const day = parseInt(document.getElementById('day').value)
-  const cate = document.getElementById('cate').value
+// 保存食材
+function saveFood() {
+  const name = document.getElementById('name').value.trim();
+  const day = parseInt(document.getElementById('day').value);
+  const cate = document.getElementById('cate').value;
+
   if (!name || isNaN(day)) {
-    alert('请填写完整信息')
-    return
+    alert("请填写完整信息");
+    return;
   }
-  foods.push({ name, day, cate, time: Date.now() })
-  localStorage.setItem('foods', JSON.stringify(foods))
-  render()
-  go('list')
+
+  foods.push({ name, day, cate, time: Date.now() });
+  localStorage.setItem('fridgeFoods', JSON.stringify(foods));
+  renderList();
+  go('list');
 }
 
-function del(index) {
-  if (!confirm('确定删除？')) return
-  foods.splice(index, 1)
-  localStorage.setItem('foods', JSON.stringify(foods))
-  render()
-}
-
-function render() {
-  const wrap = document.getElementById('listWrap')
+// 渲染列表
+function renderList() {
+  const listEl = document.getElementById('itemList');
   if (foods.length === 0) {
-    wrap.innerHTML = '<div class="empty">暂无食材</div>'
-    return
+    listEl.innerHTML = '<div style="text-align:center;padding:40px;color:#999">暂无食材</div>';
+    return;
   }
+
+  // 按过期时间排序
   const sorted = [...foods].sort((a, b) => {
-    const la = Math.max(0, a.day - Math.floor((Date.now() - a.time)/86400000))
-    const lb = Math.max(0, b.day - Math.floor((Date.now() - b.time)/86400000))
-    return la - lb
-  })
-  wrap.innerHTML = sorted.map((f, i) => {
-    const left = Math.max(0, f.day - Math.floor((Date.now() - f.time)/86400000))
-    let tag = ''
-    if (left <= 1) tag = '<div class="tag red">即将过期</div>'
-    else if (left <= 3) tag = '<div class="tag orange">注意保鲜</div>'
-    else tag = '<div class="tag green">正常</div>'
+    const leftA = Math.max(0, a.day - Math.floor((Date.now() - a.time) / 86400000));
+    const leftB = Math.max(0, b.day - Math.floor((Date.now() - b.time) / 86400000));
+    return leftA - leftB;
+  });
+
+  listEl.innerHTML = sorted.map(f => {
+    const left = Math.max(0, f.day - Math.floor((Date.now() - f.time) / 86400000));
+    let statusClass = 'normal';
+    let statusText = `${left} days`;
+
+    if (left === 0) {
+      statusClass = 'expired';
+      statusText = 'Expired';
+    } else if (left <= 2) {
+      statusClass = 'warning';
+    }
+
+    // 简易图标映射
+    const iconMap = {
+      'Vegetable': '🥕',
+      'Dairy': '🥛',
+      'Meat': '🥩',
+      'Fruit': '🍎',
+      'Other': '🥬'
+    };
+
     return `
-      <div class="food-item">
-        <div>
-          <div class="food-name">${f.name}</div>
-          <div class="food-info">${f.cate} · 剩余 ${left} 天</div>
+      <div class="item-card">
+        <div class="item-icon">${iconMap[f.cate]}</div>
+        <div class="item-info">
+          <div class="item-name">${f.name}</div>
+          <div class="item-type">${f.cate}</div>
         </div>
-        <div style="text-align:right">
-          ${tag}
-          <div class="del" onclick="del(${i})">删除</div>
-        </div>
+        <div class="badge ${statusClass}">${statusText}</div>
       </div>
-    `
-  }).join('')
+    `;
+  }).join('');
 }
 
-render()
+// 初始化
+renderList();
 </script>
+
 </body>
 </html>
