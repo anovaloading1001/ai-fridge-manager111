@@ -4,17 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>冰箱</title>
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title"="冰箱">
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system, BlinkMacSystemFont, sans-serif}
+  *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system, BlinkOS, sans-serif}
   body{background:#F8F7F2;color:#333;max-width:480px;margin:0 auto;padding:20px 16px 100px}
   .page{display:none}
   .page.active{display:block}
+
   .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
   .title{font-size:22px;font-weight:600;color:#5A7A56}
   .back{font-size:18px;color:#5A7A56;cursor:pointer}
+  
   .btn{width:100%;padding:14px;border:none;border-radius:14px;background:#92B992;color:#fff;font-size:15px;font-weight:500;margin-bottom:12px;cursor:pointer}
   .btn-outline{background:#fff;border:1px solid #E0E0D7;color:#5A7A56}
   .small-btn{padding:8px 12px;border-radius:8px;font-size:12px;border:none;background:#F1F3EF;color:#5A7A56;cursor:pointer}
@@ -31,67 +30,31 @@
 
   .input-group{margin-bottom:16px}
   .input-group label{display:block;font-size:14px;margin-bottom:6px;color:#555}
-  input,select{
-    width:100%;
-    padding:16px;
-    border:1px solid #E0E0D7;
-    border-radius:12px;
-    background:#fff;font-size:15px
-  }
-  select{min-height:56px !important;height:auto !important;font-size:15px}
+  input,select{width:100%;padding:16px;border:1px solid #E0E0D7;border-radius:12px;background:#fff;font-size:15px}
+  select{min-height:56px}
 
   .action-row{margin-top:10px;display:flex;gap:6px}
   .recipe-sheet{margin-top:12px;padding-top:12px;border-top:1px dashed #D8E2D7}
   .recipe-title{font-size:14px;font-weight:500;color:#5A7A56;margin-bottom:10px}
 
-  .filter-row{
-    display:flex;gap:8px;margin-bottom:12px;
-  }
-  .filter-select{
-    flex:1;
-    padding:14px;
-    border-radius:12px;
-    border:1px solid #E0E9DF;
-    background:#F8FFF8;
-    font-size:14px;
-    color:#3D5A45;
-    min-height:50px;
-  }
+  /* 图标按钮组（你要的最终模式！） */
+  .icon-group{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+  .icon-btn{padding:10px 12px;border-radius:10px;background:#F1F3EF;color:#555;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:4px}
+  .icon-btn.active{background:#92B992;color:#fff}
 
-  .recipe-item{
-    background:#F8FFF8;
-    border:1px solid #E0E9DF;
-    border-radius:12px;
-    padding:14px;
-    margin-bottom:8px;
-    font-size:15px;
-    cursor:pointer
-  }
+  .recipe-item{background:#F8FFF8;border:1px solid #E0E9DF;border-radius:12px;padding:14px;margin-bottom:8px;font-size:15px;cursor:pointer}
   .recipe-name{font-weight:500;color:#3D5A45;margin-bottom:6px}
   .recipe-meta{display:flex;gap:10px;font-size:12px;color:#7A9A7A;margin-bottom:4px}
-  .refresh-btn{font-size:12px;color:#92B992;cursor:pointer}
 
-  .recipe-modal{
-    position:fixed;top:0;left:0;right:0;bottom:0;
-    background:rgba(0,0,0,0.4);
-    display:flex;align-items:center;justify-content:center;
-    z-index:9999;padding:20px
-  }
-  .recipe-modal-content{
-    background:#fff;border-radius:20px;
-    width:100%;max-width:400px;
-    padding:20px;max-height:80vh;overflow-y:auto
-  }
+  .recipe-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+  .recipe-modal-content{background:#fff;border-radius:20px;width:100%;max-width:400px;padding:20px;max-height:80vh;overflow-y:auto}
   .recipe-modal-title{font-size:18px;font-weight:600;color:#3D5A45;margin-bottom:8px}
   .recipe-modal-sub{font-size:14px;color:#6D8F6D;margin-bottom:16px}
   .recipe-modal-section{margin-bottom:16px}
   .recipe-modal-section-title{font-size:14px;font-weight:500;color:#5A7A56;margin-bottom:8px}
   .recipe-modal-ing{font-size:14px;line-height:1.6;margin-bottom:4px}
   .recipe-modal-step{font-size:14px;line-height:1.7;margin-bottom:6px}
-  .recipe-modal-close{
-    width:100%;padding:12px;border-radius:12px;
-    background:#92B992;color:#fff;border:none;font-size:15px;cursor:pointer
-  }
+  .recipe-modal-close{width:100%;padding:12px;border-radius:12px;background:#92B992;color:#fff;border:none;font-size:15px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -119,31 +82,24 @@
   </div>
   <div class="input-group">
     <label>保质期天数</label>
-    <select id="expireDay">
-      <option value="1">1天</option>
-      <option value="2">2天</option>
-      <option value="3">3天</option>
-      <option value="5">5天</option>
-      <option value="7">7天</option>
-      <option value="10">10天</option>
-      <option value="15">15天</option>
-      <option value="30">30天</option>
-      <option value="60">60天</option>
-      <option value="90">90天</option>
-      <option value="180">180天</option>
-      <option value="365">365天</option>
-    </select>
+    <div class="icon-group">
+      <div class="icon-btn" onclick="setExpireDay(1)">1天</div>
+      <div class="icon-btn" onclick="setExpireDay(3)">3天</div>
+      <div class="icon-btn" onclick="setExpireDay(7)">7天</div>
+      <div class="icon-btn" onclick="setExpireDay(15)">15天</div>
+      <div class="icon-btn" onclick="setExpireDay(30)">30天</div>
+    </div>
   </div>
   <div class="input-group">
     <label>分类</label>
-    <select id="foodCate">
-      <option value="Vegetable">蔬菜 🥬</option>
-      <option value="Fruit">水果 🍎</option>
-      <option value="Meat">肉类 🥩</option>
-      <option value="Seafood">海鲜 🦐</option>
-      <option value="Dairy">蛋奶 🥛</option>
-      <option value="Other">其他 📦</option>
-    </select>
+    <div class="icon-group">
+      <div class="icon-btn" onclick="setCate('Vegetable')">🥬 蔬菜</div>
+      <div class="icon-btn" onclick="setCate('Fruit')">🍎 水果</div>
+      <div class="icon-btn" onclick="setCate('Meat')">🥩 肉类</div>
+      <div class="icon-btn" onclick="setCate('Seafood')">🦐 海鲜</div>
+      <div class="icon-btn" onclick="setCate('Dairy')">🥛 蛋奶</div>
+      <div class="icon-btn" onclick="setCate('Other')">📦 其他</div>
+    </div>
   </div>
   <button class="btn" onclick="saveFood()">保存</button>
   <button class="btn btn-outline" onclick="goMain()">取消</button>
@@ -166,78 +122,43 @@
 </div>
 
 <script>
-const portionConfig = {
-  1: { label: "1人", ratio: 1 },
-  2: { label: "2人", ratio: 2 },
-  4: { label: "4人", ratio: 4 }
-};
-
-const timeCatMap = {
-  fast: { label: "20分钟内", max:20 },
-  mid:  { label: "60分钟内", max:60 },
-  slow: { label: "60分钟以上", min:61 }
-};
-
+const portionConfig = {1:{label:"1人",ratio:1},2:{label:"2人",ratio:2},4:{label:"4人",ratio:4}};
 let currentPortion = 1;
 let currentTimeCat = "fast";
 let editId = -1;
 let openRecipeId = -1;
+let selectedExpire = 7;
+let selectedCate = "Vegetable";
 
 const recipeDB = {
-  "土豆烧牛肉":{time:75,cat:"slow",base:{牛肉:250,土豆:200,葱:15,姜:10,蒜:10,生抽:20,料酒:10,盐:4,食用油:15}},
-  "番茄炖牛肉":{time:68,cat:"mid",base:{牛肉:250,番茄:250,葱:10,姜:8,盐:4,生抽:15,番茄酱:20,食用油:12}},
-  "青椒炒牛肉":{time:12,cat:"fast",base:{牛肉:180,青椒:150,蒜:8,生抽:12,料酒:8,淀粉:3,盐:2,食用油:12}},
-  "黑椒牛肉粒":{time:15,cat:"fast",base:{牛肉:180,洋葱:80,黑胡椒:2,生抽:10,盐:2,食用油:12}},
-  "芹菜炒牛肉":{time:14,cat:"fast",base:{牛肉:180,芹菜:200,蒜:6,生抽:10,盐:2,食用油:10}},
-  "红烧牛肉":{time:80,cat:"slow",base:{牛肉:350,葱:20,姜:12,冰糖:10,生抽:20,老抽:6,盐:5,食用油:12}},
-  "水煮牛肉":{time:22,cat:"mid",base:{牛肉:200,生菜:150,蒜:15,干辣椒:8,花椒:3,盐:3,食用油:20}},
-  "孜然牛肉":{time:13,cat:"fast",base:{牛肉:180,洋葱:100,孜然:5,辣椒面:3,盐:2,食用油:12}},
-  "红烧肉":{time:55,cat:"mid",base:{五花肉:350,葱:15,姜:8,冰糖:12,生抽:15,老抽:5,盐:3,料酒:10}},
-  "青椒炒肉":{time:10,cat:"fast",base:{猪肉:180,青椒:200,蒜:6,生抽:10,盐:2,食用油:10}},
-  "白切鸡":{time:28,cat:"mid",base:{鸡肉:400,姜:12,葱:15,盐:6,料酒:10}},
-  "可乐鸡腿":{time:28,cat:"mid",base:{鸡腿:300,可乐:200,姜:8,生抽:12,老抽:4,盐:2}},
-  "白灼虾":{time:6,cat:"fast",base:{虾:250,姜:8,葱:10,料酒:5,盐:2}},
-  "虾仁滑蛋":{time:9,cat:"fast",base:{虾:150,鸡蛋:3,盐:2,料酒:3,淀粉:2,食用油:12}},
-  "西红柿炒蛋":{time:8,cat:"fast",base:{番茄:200,鸡蛋:3,盐:2,糖:2,食用油:12,葱:5}},
-  "蒜蓉娃娃菜":{time:10,cat:"fast",base:{娃娃菜:300,大蒜:20,生抽:10,盐:1,食用油:10}},
-  "酸辣土豆丝":{time:8,cat:"fast",base:{土豆:300,干辣椒:3,蒜:8,醋:15,盐:2,食用油:10}}
+  "青椒炒牛肉":{time:12,cat:"fast",base:{牛肉:180,青椒:150,蒜:8,生抽:12,盐:2}},
+  "黑椒牛肉粒":{time:15,cat:"fast",base:{牛肉:180,洋葱:80,黑胡椒:2,生抽:10}},
+  "芹菜炒牛肉":{time:14,cat:"fast",base:{牛肉:180,芹菜:200,蒜:6,生抽:10}},
+  "孜然牛肉":{time:13,cat:"fast",base:{牛肉:180,洋葱:100,孜然:5}},
+  "水煮牛肉":{time:22,cat:"mid",base:{牛肉:200,生菜:150,蒜:15}},
+  "红烧肉":{time:55,cat:"mid",base:{五花肉:350,葱:15,姜:8}},
+  "青椒炒肉":{time:10,cat:"fast",base:{猪肉:180,青椒:200,蒜:6}},
+  "白灼虾":{time:6,cat:"fast",base:{虾:250,姜:8,葱:10}},
+  "虾仁滑蛋":{time:9,cat:"fast",base:{虾:150,鸡蛋:3,盐:2}},
+  "西红柿炒蛋":{time:8,cat:"fast",base:{番茄:200,鸡蛋:3,盐:2}},
+  "蒜蓉娃娃菜":{time:10,cat:"fast",base:{娃娃菜:300,大蒜:20}},
+  "酸辣土豆丝":{time:8,cat:"fast",base:{土豆:300,蒜:8,醋:15}}
 };
-
-for(const k in recipeDB){
-  recipeDB[k].steps=[
-    "1.食材洗净切配",
-    "2.主料预处理/腌制",
-    "3.热锅爆香辅料",
-    "4.下入主料翻炒",
-    "5.加调料调味",
-    "6.出锅装盘"
-  ];
+for(let k in recipeDB){
+  recipeDB[k].steps = ["1.食材洗净切好","2.主料预处理","3.热锅爆香辅料","4.翻炒主料","5.调味出锅"];
 }
 
-const recipeMap={
-  "牛肉":["青椒炒牛肉","黑椒牛肉粒","芹菜炒牛肉","孜然牛肉","水煮牛肉","红烧牛肉","土豆烧牛肉","番茄炖牛肉"],
-  "牛腩":["土豆烧牛肉","番茄炖牛肉"],
+const recipeMap = {
+  "牛肉":["青椒炒牛肉","黑椒牛肉粒","芹菜炒牛肉","孜然牛肉"],
   "猪肉":["红烧肉","青椒炒肉"],
-  "鸡肉":["白切鸡"],
-  "鸡腿":["可乐鸡腿"],
   "虾":["白灼虾","虾仁滑蛋"],
   "鸡蛋":["西红柿炒蛋"],
   "土豆":["酸辣土豆丝"],
   "娃娃菜":["蒜蓉娃娃菜"]
 };
+const aliasMap = {"牛腩":"牛肉","五花肉":"猪肉","鸡胸肉":"鸡肉","基围虾":"虾"};
 
-const aliasMap={
-  "牛腩":"牛肉","牛蹄筋":"牛肉","五花肉":"猪肉","瘦肉":"猪肉",
-  "鸡胸肉":"鸡肉","基围虾":"虾","番茄":"西红柿"
-};
-
-function isIngredientMatch(a,b){
-  if(a===b)return true;
-  if(aliasMap[a]===b||aliasMap[b]===a)return true;
-  return false;
-}
-
-let foods=JSON.parse(localStorage.getItem("foods"))||[];
+let foods = JSON.parse(localStorage.getItem("foods"))||[];
 
 function goMain(){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
@@ -247,60 +168,56 @@ function goMain(){
 function goAdd(){
   editId=-1;
   document.getElementById("foodName").value="";
-  document.getElementById("produceDate").valueAsDate=new Date();
-  document.getElementById("expireDay").value="7";
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById("editPage").classList.add("active");
+  document.getElementById("produceDate").valueAsDate = new Date();
+  selectedExpire=7;
+  selectedCate="Vegetable";
+  refreshIconBtns();
+  showPage("editPage");
 }
 function goEdit(id){
   editId=id;
   const f=foods[id];
   document.getElementById("foodName").value=f.name;
   document.getElementById("produceDate").value=f.produceDate;
-  document.getElementById("expireDay").value=f.expireDay;
-  document.getElementById("foodCate").value=f.cate;
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-  document.getElementById("editPage").classList.add("active");
+  selectedExpire=parseInt(f.expireDay);
+  selectedCate=f.cate;
+  refreshIconBtns();
+  showPage("editPage");
 }
 function saveFood(){
   const name=document.getElementById("foodName").value.trim();
   const pd=document.getElementById("produceDate").value;
-  const ed=+document.getElementById("expireDay").value;
-  const cate=document.getElementById("foodCate").value;
-  if(!name||!pd||!ed){alert("请填写完整");return;}
-  const item={name,produceDate:pd,expireDay:ed,cate};
-  if(editId>=0){
-    foods[editId]=item;
-  }else{
-    foods.push(item);
-  }
+  if(!name||!pd){alert("请填写完整");return;}
+  const item={name,produceDate:pd,expireDay:selectedExpire,cate:selectedCate};
+  if(editId>=0) foods[editId]=item;
+  else foods.push(item);
   localStorage.setItem("foods",JSON.stringify(foods));
   goMain();
 }
-function delFood(id){
-  if(!confirm("确认删除？"))return;
-  foods.splice(id,1);
-  localStorage.setItem("foods",JSON.stringify(foods));
-  renderList();
+function delFood(id){if(confirm("确定删除？")){foods.splice(id,1);localStorage.setItem("foods",JSON.stringify(foods));renderList();}}
+function toggleRec(id){openRecipeId=openRecipeId===id?-1:id;renderList();}
+function showPage(id){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.getElementById(id).classList.add("active");}
+
+function setExpireDay(d){selectedExpire=d;refreshIconBtns();}
+function setCate(c){selectedCate=c;refreshIconBtns();}
+function refreshIconBtns(){
+  document.querySelectorAll("#editPage .icon-btn").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(`#editPage .icon-btn`).forEach(b=>{if(b.innerText.includes(selectedExpire)||b.innerText.includes(selectedCate))b.classList.add("active");});
 }
-function toggleRec(id){
-  openRecipeId=openRecipeId===id?-1:id;
-  renderList();
-}
+
 function setPortion(p){currentPortion=p;renderList();}
 function setTimeCat(c){currentTimeCat=c;renderList();}
 
 function getExpireStatus(f){
   const pd=new Date(f.produceDate);
   const now=new Date();
-  const dayPassed=Math.floor((now-pd)/86400000);
+  const passed=Math.floor((now-pd)/86400000);
   const total=+f.expireDay;
-  const left=Math.max(0,total-dayPassed);
+  const left=Math.max(0,total-passed);
   const ratio=left/total;
   let color="#92B992";
-  if(left<=1)color="#E5989B";
-  else if(left<=3)color="#F5C99A";
-  return {left,total,ratio,color,pd,expDate:new Date(pd.getTime()+total*86400000)};
+  if(left<=1)color="#E5989B";else if(left<=3)color="#F5C99A";
+  return {left,ratio,color,pd,exp:new Date(pd.getTime()+total*86400000)};
 }
 
 function getIcon(c){
@@ -311,81 +228,65 @@ function getIcon(c){
 function getFilteredRecipes(name){
   const key=aliasMap[name]||name;
   const all=recipeMap[key]||[];
-  const filtered=all.filter(r=>recipeDB[r].cat===currentTimeCat);
-  return filtered.slice(0,6);
+  return all.filter(r=>recipeDB[r].cat===currentTimeCat).slice(0,6);
 }
 
 function openRecipeModal(name){
   const d=recipeDB[name];
   if(!d)return;
-  const ratio=portionConfig[currentPortion].ratio;
+  const r=portionConfig[currentPortion].ratio;
   document.getElementById("modalTitle").innerText=name;
-  document.getElementById("modalSub").innerText=`⏱️ ${d.time}分钟 ｜ ${portionConfig[currentPortion].label}`;
-  const ingHtml=Object.entries(d.base).map(([k,v])=>{
-    const real=Math.round(v*ratio);
-    const has=foods.some(f=>isIngredientMatch(f.name,k));
-    return `<div class="recipe-modal-ing">${has?"✅":"⚪"} ${k}：${real}g</div>`;
-  }).join("");
-  document.getElementById("modalIngredients").innerHTML=ingHtml;
+  document.getElementById("modalSub").innerText=`${d.time}分钟｜${portionConfig[currentPortion].label}`;
+  document.getElementById("modalIngredients").innerHTML=Object.entries(d.base).map(([k,v])=>`<div class="recipe-modal-ing">⚪ ${k}：${Math.round(v*r)}g</div>`).join("");
   document.getElementById("modalSteps").innerHTML=d.steps.map(s=>`<div class="recipe-modal-step">${s}</div>`).join("");
   document.getElementById("recipeModal").style.display="flex";
 }
-function closeRecipeModal(){
-  document.getElementById("recipeModal").style.display="none";
-}
+function closeRecipeModal(){document.getElementById("recipeModal").style.display="none";}
 
 function renderList(){
   const c=document.getElementById("foodList");
-  if(foods.length===0){
-    c.innerHTML=`<div style="text-align:center;padding:40px;color:#999">暂无食材</div>`;
-    return;
-  }
-  const sorted=[...foods].map((f,i)=>({f,i})).sort((a,b)=>getExpireStatus(a.f).left-getExpireStatus(b.f).left);
-  c.innerHTML=sorted.map(({f:i,id:rid})=>{
-    const st=getExpireStatus(i);
-    const icon=getIcon(i.cate);
-    const show=openRecipeId===rid;
-    const list=getFilteredRecipes(i.name);
-    const pdStr=st.pd.toLocaleDateString();
-    const expStr=st.expDate.toLocaleDateString();
-    return `<div class="food-card">
-<div class="food-row">
-  <div class="food-icon">${icon}</div>
-  <div style="flex:1">
-    <div class="food-name">${i.name}</div>
-    <div class="food-desc">生产：${pdStr}｜过期：${expStr}｜保质期：${i.expireDay}天</div>
-    <div class="food-exp-main">剩余 ${st.left} 天</div>
-    <div class="exp-bar-wrap">
-      <div class="exp-bar" style="width:${st.ratio*100}%;background:${st.color}"></div>
-    </div>
-  </div>
-</div>
-<div class="action-row">
-  <button class="small-btn" onclick="goEdit(${rid})">编辑</button>
-  <button class="small-btn" onclick="delFood(${rid})">删除</button>
-  <button class="small-btn" onclick="toggleRec(${rid})">${show?"收起菜谱":"查看菜谱"}</button>
-</div>
-${show?`<div class="recipe-sheet">
-  <div class="recipe-title">推荐菜谱</div>
-  <div class="filter-row">
-    <select class="filter-select" onchange="setPortion(+this.value)">
-      <option value="1">1人</option>
-      <option value="2">2人</option>
-      <option value="4">4人</option>
-    </select>
-    <select class="filter-select" onchange="setTimeCat(this.value)">
-      <option value="fast">20分钟内</option>
-      <option value="mid">60分钟内</option>
-      <option value="slow">60分钟以上</option>
-    </select>
-  </div>
-  ${list.map(r=>`<div class="recipe-item" onclick="openRecipeModal('${r}')">
-    <div class="recipe-name">${r}</div>
-    <div class="recipe-meta">⏱️ ${recipeDB[r].time}分钟</div>
-  </div>`).join("")}
-  ${list.length===0?'<div style="font-size:12px;color:#888">暂无匹配菜谱</div>':''}
-</div>`:""}
-</div>`;
+  if(!foods.length){c.innerHTML=`<div style="text-align:center;padding:40px;color:#999">暂无食材</div>`;return;}
+  const sorted=[...foods].map((f,id)=>({f,id})).sort((a,b)=>getExpireStatus(a.f).left-getExpireStatus(b.f).left);
+  c.innerHTML=sorted.map(({f,id})=>{
+    const s=getExpireStatus(f);
+    const show=openRecipeId===id;
+    const list=getFilteredRecipes(f.name);
+    return `
+    <div class="food-card">
+      <div class="food-row">
+        <div class="food-icon">${getIcon(f.cate)}</div>
+        <div style="flex:1">
+          <div class="food-name">${f.name}</div>
+          <div class="food-desc">生产：${s.pd.toLocaleDateString()}｜过期：${s.exp.toLocaleDateString()}｜保质：${f.expireDay}天</div>
+          <div class="food-exp-main">剩余 ${s.left} 天</div>
+          <div class="exp-bar-wrap"><div class="exp-bar" style="width:${s.ratio*100}%;background:${s.color}"></div></div>
+        </div>
+      </div>
+      <div class="action-row">
+        <button class="small-btn" onclick="goEdit(${id})">编辑</button>
+        <button class="small-btn" onclick="delFood(${id})">删除</button>
+        <button class="small-btn" onclick="toggleRec(${id})">${show?"收起":"菜谱"}</button>
+      </div>
+      ${show?`
+      <div class="recipe-sheet">
+        <div class="recipe-title">推荐菜谱</div>
+        <div class="icon-group">
+          <div class="icon-btn ${currentPortion===1?'active':''}" onclick="setPortion(1)">1人</div>
+          <div class="icon-btn ${currentPortion===2?'active':''}" onclick="setPortion(2)">2人</div>
+          <div class="icon-btn ${currentPortion===4?'active':''}" onclick="setPortion(4)">4人</div>
+        </div>
+        <div class="icon-group">
+          <div class="icon-btn ${currentTimeCat==='fast'?'active':''}" onclick="setTimeCat('fast')">⏱ 20分钟</div>
+          <div class="icon-btn ${currentTimeCat==='mid'?'active':''}" onclick="setTimeCat('mid')">⏱ 60分钟</div>
+          <div class="icon-btn ${currentTimeCat==='slow'?'active':''}" onclick="setTimeCat('slow')">⏱ 60+分钟</div>
+        </div>
+        ${list.map(r=>`
+        <div class="recipe-item" onclick="openRecipeModal('${r}')">
+          <div class="recipe-name">${r}</div>
+          <div class="recipe-meta">${recipeDB[r].time}分钟</div>
+        </div>`).join("")}
+      </div>`:""}
+    </div>`;
   }).join("");
 }
 
