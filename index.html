@@ -14,10 +14,10 @@
   .page.active{display:block}
   .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
   .title{font-size:22px;font-weight:600;color:#5A7A56}
-  .back{font-size:18px;color:#5A7A56}
-  .btn{width:100%;padding:14px;border:none;border-radius:14px;background:#92B992;color:#fff;font-size:15px;font-weight:500;margin-bottom:12px}
+  .back{font-size:18px;color:#5A7A56;cursor:pointer}
+  .btn{width:100%;padding:14px;border:none;border-radius:14px;background:#92B992;color:#fff;font-size:15px;font-weight:500;margin-bottom:12px;cursor:pointer}
   .btn-outline{background:#fff;border:1px solid #E0E0D7;color:#5A7A56}
-  .small-btn{padding:8px 12px;border-radius:8px;font-size:12px;border:none;background:#F1F3EF;color:#5A7A56}
+  .small-btn{padding:8px 12px;border-radius:8px;font-size:12px;border:none;background:#F1F3EF;color:#5A7A56;cursor:pointer}
   .food-card{background:#fff;border-radius:20px;padding:16px;margin-bottom:10px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
   .food-row{display:flex;align-items:center;gap:12px}
   .food-icon{width:44px;height:44px;border-radius:12px;background:#F1F3EF;display:flex;align-items:center;justify-content:center;font-size:20px}
@@ -29,17 +29,15 @@
   .exp-green{background:#92B992}
   .action-row{margin-top:10px;display:flex;gap:6px}
 
-  /* 田园风食谱卡片 */
   .recipe-sheet{margin-top:12px;padding-top:12px;border-top:1px dashed #D8E2D7}
   .recipe-title{font-size:14px;font-weight:500;color:#5A7A56;margin-bottom:10px}
   .portion-tabs{display:flex;gap:8px;margin-bottom:10px}
-  .portion-tab{flex:1;padding:8px 6px;border-radius:10px;background:#F1F3EF;color:#5A7A56;font-size:13px;text-align:center;border:none}
+  .portion-tab{flex:1;padding:8px 6px;border-radius:10px;background:#F1F3EF;color:#5A7A56;font-size:13px;text-align:center;border:none;cursor:pointer}
   .portion-tab.active{background:#92B992;color:#fff}
-  .recipe-item{background:#F8FFF8;border:1px solid #E0E9DF;border-radius:12px;padding:14px;margin-bottom:8px;font-size:15px}
+  .recipe-item{background:#F8FFF8;border:1px solid #E0E9DF;border-radius:12px;padding:14px;margin-bottom:8px;font-size:15px;cursor:pointer}
   .recipe-name{font-weight:500;color:#3D5A45;margin-bottom:6px}
-  .recipe-info{font-size:12px;color:#6D8F6D;margin-bottom:8px}
   .recipe-meta{display:flex;gap:10px;font-size:12px;color:#7A9A7A;margin-bottom:8px}
-  .refresh-btn{font-size:12px;color:#92B992}
+  .refresh-btn{font-size:12px;color:#92B992;cursor:pointer}
   .input-group{margin-bottom:14px}
   .input-group label{display:block;font-size:14px;margin-bottom:6px;color:#555}
   input,select{width:100%;padding:12px 14px;border:1px solid #E0E0D7;border-radius:12px;background:#fff;font-size:15px}
@@ -80,7 +78,7 @@
     </select>
   </div>
   <button class="btn" onclick="saveFood()">保存</button>
-  <button class="btn-outline" onclick="goMain()">取消</button>
+  <button class="btn btn-outline" onclick="goMain()">取消</button>
 </div>
 
 <script>
@@ -223,7 +221,7 @@ const recipeDB = {
   "可乐鸡腿": {
     time: "25分钟",
     base: {
-      鸡腿:2个(约240g),可乐:150,
+      鸡腿:240,可乐:150,
       姜:6,生抽:10,老抽:3,盐:1
     },
     steps: [
@@ -250,7 +248,7 @@ const recipeDB = {
   "虾仁滑蛋": {
     time: "8分钟",
     base: {
-      虾:120,鸡蛋:2个,
+      虾:120,鸡蛋:2,
       盐:2,料酒:3,淀粉:2,食用油:12
     },
     steps: [
@@ -264,7 +262,7 @@ const recipeDB = {
   "西红柿炒蛋": {
     time: "7分钟",
     base: {
-      西红柿:180,鸡蛋:2个,
+      西红柿:180,鸡蛋:2,
       盐:2,糖:2,食用油:12,葱:5
     },
     steps: [
@@ -458,7 +456,6 @@ ${sl.map(r=>{
   return `<div class="recipe-item" onclick="openRec(${rid},'${r}')">
 <div class="recipe-name">${r}</div>
 <div class="recipe-meta">⏱️ ${info.time} ｜ 🍽️ ${portionConfig[currentPortion].label}</div>
-<div class="recipe-info">点击查看详细食材与步骤</div>
 </div>`;
 }).join('')}
 ${sl.length===0?'<div style="font-size:12px;color:#888">暂无推荐</div>':''}
