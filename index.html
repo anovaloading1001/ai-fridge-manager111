@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI冰箱管家</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+        body{background:#f7f8fa;max-width:480px;margin:0 auto;min-height:100vh;padding-bottom:70px;}
+        .page{display:none;padding:16px;}
+        .page.active{display:block;}
+        .header{display:flex;justify-content:space-between;align-items:center;margin:12px 0 20px;font-size:18px;font-weight:600;}
+        .back-btn{background:none;border:none;font-size:16px;cursor:pointer;}
+        .card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+        .section-title{font-weight:600;margin:20px 0 10px;color:#222;}
+        .warn-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f2f2f2;}
+        .btn{background:#007aff;color:#fff;border:none;padding:12px 16px;border-radius:12px;width:100%;font-weight:500;margin:8px 0;cursor:pointer;}
+        .btn-outline{background:#fff;color:#007aff;border:1px solid #007aff;}
+        .food-group{margin-bottom:16px;}
+        .group-title{font-size:14px;color:#666;margin-bottom:8px;}
+        .food-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f5f5f5;}
+        .edit-btn{color:#007aff;font-size:13px;}
+        .step{margin:8px 0;line-height:1.6;}
+        .camera-box{width:240px;height:320px;border:2px dashed #ddd;margin:20px auto;border-radius:16px;display:grid;place-items:center;color:#999;}
+        .btn-row{display:flex;gap:10px;}
+        .btn-row .btn{flex:1;}
+        .tag{display:inline-block;padding:6px 10px;background:#f2f2f2;border-radius:8px;margin:4px;}
+        .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #eee;display:flex;justify-content:space-around;padding:12px 0;}
+        .nav-item{font-size:12px;text-align:center;cursor:pointer;}
+    </style>
+</head>
+<body>
+
+<!-- 首页 -->
+<div class="page active" id="home">
+    <div class="header">🧊 AI冰箱管家</div>
+    <div class="section-title">⚠️ 即将过期预警</div>
+    <div class="card">
+        <div class="warn-item">🔴 西红柿 <span>＜1天</span></div>
+        <div class="warn-item">🟠 牛奶 <span>2天</span></div>
+        <div class="warn-item">🟡 菠菜 <span>5天</span></div>
+    </div>
+    <button class="btn btn-outline" onclick="go('recipeDetail')">查看清库存菜谱</button>
+
+    <div class="section-title">🍳 今日推荐</div>
+    <div class="card" onclick="go('recipeDetail')">
+        <div>⭐ 番茄炒蛋</div>
+        <div style="color:#666">用掉：西红柿</div>
+    </div>
+    <div class="card">
+        <div>⭐⭐ 奶油蘑菇汤</div>
+        <div style="color:#666">用掉：牛奶、洋葱</div>
+    </div>
+    <button class="btn btn-outline">换一批</button>
+</div>
+
+<!-- 库存 -->
+<div class="page" id="stock">
+    <div class="header">
+        <button class="back-btn" onclick="go('home')">←</button>
+        库存（8件）
+    </div>
+    <div class="card">
+        <input type="text" placeholder="🔍 搜索食材" style="width:100%;border:none;outline:none;padding:4px;">
+    </div>
+    <div class="food-group">
+        <div class="group-title">🔴 即将过期</div>
+        <div class="food-item">西红柿 <span class="edit-btn">1天 修改</span></div>
+        <div class="food-item">牛奶 <span class="edit-btn">2天 修改</span></div>
+    </div>
+    <div class="food-group">
+        <div class="group-title">🟡 一周内</div>
+        <div class="food-item">菠菜 <span class="edit-btn">5天 修改</span></div>
+        <div class="food-item">鸡蛋 <span class="edit-btn">7天 修改</span></div>
+    </div>
+    <div class="food-group">
+        <div class="group-title">⚪ 尚可</div>
+        <div class="food-item">土豆 <span class="edit-btn">12天 修改</span></div>
+        <div class="food-item">大米 <span class="edit-btn">30天 修改</span></div>
+    </div>
+    <button class="btn">+ 手动添加食材</button>
+</div>
+
+<!-- 菜谱详情 -->
+<div class="page" id="recipeDetail">
+    <div class="header">
+        <button class="back-btn" onclick="go('home')">←</button>
+        番茄炒蛋
+    </div>
+    <div style="margin:10px 0;">⭐ 简单 · ⏱️ 15分钟</div>
+    <div class="section-title">用到食材</div>
+    <div class="card">
+        <div>✓ 西红柿 ×1</div>
+        <div>✓ 鸡蛋 ×2</div>
+        <div>⚠️ 缺：葱花（可省略）</div>
+    </div>
+    <div class="section-title">做法步骤</div>
+    <div class="card">
+        <div class="step">1. 西红柿切块，鸡蛋打散</div>
+        <div class="step">2. 热油炒鸡蛋盛出</div>
+        <div class="step">3. 炒西红柿出汁，倒回鸡蛋</div>
+        <div class="step">4. 加盐、糖调味出锅</div>
+    </div>
+    <button class="btn btn-outline">▶️ 查看视频教程</button>
+    <button class="btn">✅ 我做完了</button>
+</div>
+
+<!-- 拍照录入 -->
+<div class="page" id="camera">
+    <div class="header">
+        <button class="back-btn" onclick="go('home')">←</button>
+        拍照录入
+    </div>
+    <div class="camera-box">相机取景框</div>
+    <div class="btn-row">
+        <button class="btn">拍照</button>
+        <button class="btn btn-outline">相册选择</button>
+    </div>
+    <div class="section-title">识别结果</div>
+    <div class="card">
+        <div>已识别：西红柿、鸡蛋、牛奶</div>
+        <div style="margin-top:8px;">已自动加入库存</div>
+    </div>
+    <button class="btn btn-outline" onclick="go('stock')">查看库存</button>
+</div>
+
+<!-- 设置 -->
+<div class="page" id="setting">
+    <div class="header">
+        <button class="back-btn" onclick="go('home')">←</button>
+        设置
+    </div>
+    <div class="section-title">忌口/不喜欢</div>
+    <div class="card">
+        <div class="food-item">苦瓜 <span class="edit-btn">删除</span></div>
+        <div class="food-item">内脏 <span class="edit-btn">删除</span></div>
+        <div class="food-item">香菜 <span class="edit-btn">删除</span></div>
+    </div>
+    <button class="btn btn-outline">+ 添加忌口</button>
+    <div class="section-title">饮食偏好</div>
+    <div style="padding:10px;">
+        <span class="tag">素食</span>
+        <span class="tag">少油</span>
+        <span class="tag">快手菜</span>
+    </div>
+</div>
+
+<!-- 底部导航 -->
+<div class="bottom-nav">
+    <div class="nav-item" onclick="go('home')">🏠 首页</div>
+    <div class="nav-item" onclick="go('stock')">📋 库存</div>
+    <div class="nav-item" onclick="go('camera')">📸 录入</div>
+    <div class="nav-item" onclick="go('setting')">⚙️ 设置</div>
+</div>
+
+<script>
+function go(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+    document.getElementById(id).classList.add('active')
+}
+</script>
+</body>
+</html>
